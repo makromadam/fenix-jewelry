@@ -1,9 +1,0 @@
-{
-  "name": "fenix-jewelry-website",
-  "private": true,
-  "version": "1.0.0",
-  "scripts": {
-    "import-products": "node scripts/import-products.js",
-    "build-standalone": "node scripts/build-standalone.js"
-  }
-}
