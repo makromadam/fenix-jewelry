@@ -62,6 +62,9 @@
 .pill:hover{opacity:1;border-color:var(--gold-deep);}
 .pill.active{background:var(--gold);color:var(--obsidian);border-color:var(--gold);opacity:1;}
 .result-count{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+.load-more-wrap{display:flex;justify-content:center;padding:24px 0 48px;}
+.load-more-wrap[hidden]{display:none;}
+.load-more{min-width:220px;justify-content:center;background:transparent;}
 
 /* grid 5 / 2 / 1 */
 .product-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px 20px;padding:64px 0 40px;}
@@ -163,8 +166,11 @@
 <!-- ===== GRID ===== -->
 <section class="section-sm" style="padding-top:0">
   <div class="container">
-    <div class="result-count" id="resultCount" style="padding:30px 0 0"></div>
+    <div class="result-count" id="resultCount" style="padding:30px 0 0" aria-live="polite"></div>
     <div class="product-grid" id="grid" data-stagger></div>
+    <div class="load-more-wrap" id="loadMoreWrap" hidden>
+      <button class="btn load-more" id="loadMore" type="button" aria-controls="grid">Load More</button>
+    </div>
   </div>
 </section>
 
@@ -262,6 +268,13 @@
 
   var products = (window.FENIX_PRODUCTS||[]).filter(function(p){return p.category===key;});
   var grid = document.getElementById('grid');
+  var resultCount = document.getElementById('resultCount');
+  var loadMoreWrap = document.getElementById('loadMoreWrap');
+  var loadMore = document.getElementById('loadMore');
+  var PAGE_SIZE = 30;
+  var visibleCount = PAGE_SIZE;
+  var sortedProducts = [];
+  var state={sort:'alpha'};
 
   function escapeHtml(value){
     return String(value||'').replace(/[&<>"']/g,function(char){
@@ -273,8 +286,7 @@
     return value.replace(/^\/products\//,'public/products/');
   }
 
-  function render(list){
-    grid.innerHTML = list.map(function(p){
+  function productCard(p){
       var title=p.title||p.slug;
       var msg=encodeURIComponent("Hello FENIX, I'd like to request information about "+title+".");
       var link='product.html?cat='+encodeURIComponent(key)+'&id='+encodeURIComponent(p.slug);
@@ -288,29 +300,71 @@
           '<a class="p-order" href="https://wa.me/905334099901?text='+msg+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">Order</a>'+
         '</div>'+
       '</article>';
-    }).join('');
-    grid.querySelectorAll('img').forEach(function(img){
-      img.addEventListener('error',function(){img.src='assets/img/image-placeholder.png';},{once:true});
-    });
-    // stagger + reveal
-    var cards=[].slice.call(grid.children);
-    cards.forEach(function(c,i){ c.style.transitionDelay=(0.04*(i%10))+'s'; });
-    requestAnimationFrame(function(){
-      var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.05});
-      cards.forEach(function(c){io.observe(c);});
-      // fallback
-      setTimeout(function(){cards.forEach(function(c){c.classList.add('in');});},1200);
-    });
-    document.getElementById('resultCount').textContent = list.length + ' pieces';
   }
 
-  var state={sort:'alpha'};
-  function apply(){
-    var list=products.slice();
-    list.sort(function(a,b){return (a.title||a.slug).localeCompare(b.title||b.slug,'en',{numeric:true});});
-    if(state.sort==='reverse') list.reverse();
-    render(list);
+  function revealCards(cards){
+    cards.forEach(function(card,i){
+      card.style.transitionDelay=(0.04*(i%10))+'s';
+      card.querySelectorAll('img').forEach(function(img){
+        img.addEventListener('error',function(){img.src='assets/img/image-placeholder.png';},{once:true});
+      });
+    });
+    requestAnimationFrame(function(){
+      if(!('IntersectionObserver' in window)){
+        cards.forEach(function(card){card.classList.add('in');});
+        return;
+      }
+      var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          }
+        });
+      },{threshold:.05});
+      cards.forEach(function(card){io.observe(card);});
+      setTimeout(function(){cards.forEach(function(card){card.classList.add('in');});},1200);
+    });
   }
+
+  function updateListStatus(){
+    var shown=Math.min(visibleCount,sortedProducts.length);
+    resultCount.textContent=shown+' of '+sortedProducts.length+' pieces';
+    loadMoreWrap.hidden=shown>=sortedProducts.length;
+  }
+
+  function renderInitial(){
+    var visible=sortedProducts.slice(0,visibleCount);
+    grid.innerHTML=visible.map(productCard).join('');
+    revealCards([].slice.call(grid.children));
+    updateListStatus();
+  }
+
+  function renderMore(){
+    var start=Math.min(visibleCount,sortedProducts.length);
+    visibleCount=Math.min(visibleCount+PAGE_SIZE,sortedProducts.length);
+    var nextProducts=sortedProducts.slice(start,visibleCount);
+    if(!nextProducts.length){
+      updateListStatus();
+      return;
+    }
+    var marker=document.createElement('div');
+    marker.innerHTML=nextProducts.map(productCard).join('');
+    var newCards=[].slice.call(marker.children);
+    newCards.forEach(function(card){grid.appendChild(card);});
+    revealCards(newCards);
+    updateListStatus();
+  }
+
+  function apply(){
+    sortedProducts=products.slice();
+    sortedProducts.sort(function(a,b){return (a.title||a.slug).localeCompare(b.title||b.slug,'en',{numeric:true});});
+    if(state.sort==='reverse') sortedProducts.reverse();
+    visibleCount=PAGE_SIZE;
+    renderInitial();
+  }
+
+  loadMore.addEventListener('click',renderMore);
 
   document.querySelectorAll('.pill[data-sort]').forEach(function(b){
     b.addEventListener('click',function(){
