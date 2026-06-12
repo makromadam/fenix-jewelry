@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FENIX Jewelry — Product</title>
+<link rel="stylesheet" href="assets/fenix.css?v=20260612-3">
+<style>
+/* ============ PAGE 3 — PRODUCT ============ */
+.pd{padding:calc(var(--nav-h) + 70px) 0 0;}
+.pd-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:start;}
+
+/* left — single product shot */
+.pd-gallery{display:block;position:sticky;top:100px;}
+.stage{position:relative;height:620px;overflow:hidden;background:
+  radial-gradient(120% 90% at 50% 30%, rgba(201,162,78,.10), transparent 60%),var(--charcoal-2);
+  border:1px solid var(--line-soft);}
+.stage-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform .6s var(--ease);will-change:transform;}
+.stage-rim{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 120px rgba(11,10,9,.7), inset 0 0 40px rgba(201,162,78,.12);}
+.pd-thumbs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:12px;}
+.pd-thumb{position:relative;aspect-ratio:1;border:1px solid var(--line-soft);padding:0;background:var(--charcoal-2);cursor:pointer;overflow:hidden;opacity:.68;transition:opacity .3s,border-color .3s;}
+.pd-thumb:hover,.pd-thumb.active{opacity:1;border-color:var(--gold);}
+.pd-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+
+/* right — info */
+.pd-info{padding-top:6px;}
+.pd-top{display:flex;align-items:center;gap:16px;margin-bottom:24px;}
+.pd-code{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:var(--muted);}
+.pd-name{font-family:var(--display);text-transform:uppercase;letter-spacing:.03em;line-height:1.0;
+  font-size:clamp(40px,4.4vw,68px);color:var(--ivory);margin:0 0 18px;}
+.pd-color-picker{margin:0 0 28px;}
+.pd-color-head{display:flex;align-items:center;gap:12px;margin-bottom:12px;font-family:var(--mono);
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);}
+.pd-color-head strong{color:var(--ivory);font-weight:400;}
+.pd-colors{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.pd-color{
+  width:42px;height:42px;padding:5px;border:1px solid var(--line);background:transparent;cursor:pointer;
+  transition:border-color .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease);
+}
+.pd-color:hover{border-color:var(--gold-soft);transform:translateY(-2px);}
+.pd-color.active{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 0 20px rgba(201,162,78,.18);}
+.pd-color span{display:block;width:100%;height:100%;border:1px solid rgba(255,255,255,.16);}
+.pd-color[data-color="rose-gold"] span{background:linear-gradient(135deg,#8f5e58,#e2aaa0 55%,#b97870);}
+.pd-color[data-color="white-gold"] span{background:linear-gradient(135deg,#8f918f,#f1f0e8 55%,#b6b6b1);}
+.pd-color[data-color="yellow-gold"] span{background:linear-gradient(135deg,#8a6627,#e1bd62 55%,#b88931);}
+.pd-color[data-color="gold"] span{background:linear-gradient(135deg,#76541e,#d4a94b 55%,#997126);}
+.pd-color[data-color="silver"] span{background:linear-gradient(135deg,#737b82,#dce1e4 55%,#9da5aa);}
+.pd-price{font-family:var(--display);font-size:30px;color:var(--gold-soft);margin:0 0 8px;}
+.pd-meta-line{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:38px;}
+.pd-block{border-top:1px solid var(--line-soft);padding:30px 0;}
+.pd-block .lab{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:block;}
+.pd-block p{font-size:17px;line-height:1.85;color:var(--ivory);opacity:.84;font-weight:300;margin:0;}
+.spec{display:flex;justify-content:space-between;gap:20px;padding:13px 0;border-bottom:1px solid var(--line-soft);}
+.spec:last-child{border-bottom:0;}
+.spec .sk{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+.spec .sv{font-size:15px;color:var(--ivory);}
+.pd-cta{display:flex;flex-direction:column;gap:16px;margin-top:34px;}
+.pd-cta .btn{justify-content:center;padding:20px;}
+.pd-secondary{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+  text-align:center;display:inline-flex;align-items:center;gap:10px;justify-content:center;padding:6px;}
+.pd-secondary:hover{color:var(--gold-soft);}
+
+/* related */
+.related{padding:40px 0 0;}
+.related-head{text-align:center;margin:50px 0 50px;}
+.related-head h2{font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-size:clamp(28px,3.4vw,48px);margin:14px 0 0;}
+.related-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.r-card{cursor:pointer;}
+.r-shot{height:280px;position:relative;overflow:hidden;background:var(--charcoal-2);}
+.r-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease-out);}
+.r-card:hover .r-img{transform:scale(1.06) rotate(.4deg);}
+.r-meta{display:flex;justify-content:space-between;align-items:baseline;padding:16px 2px 0;gap:12px;}
+.r-name{font-family:var(--display);font-size:16px;color:var(--ivory);transition:color .4s var(--ease);}
+.r-card:hover .r-name{color:var(--gold-soft);}
+.r-price{font-family:var(--display);font-size:15px;color:var(--muted);}
+
+@media (max-width:980px){
+  .pd-grid{grid-template-columns:1fr;gap:40px;}
+  .pd-gallery{position:static;}
+  .stage{height:460px;}
+  .related-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:560px){
+  .stage{height:400px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav">
+  <a class="nav-logo" href="index.html"><img src="assets/img/logo.png?v=2" alt="FENIX Jewelry"></a>
+  <div class="nav-group right">
+    <a class="nav-link" href="category.html?cat=rings">Rings</a>
+    <a class="nav-link" href="category.html?cat=necklaces">Necklaces</a>
+    <a class="nav-link" href="category.html?cat=bracelets">Bracelets</a>
+    <a class="nav-link" href="category.html?cat=earrings">Earrings</a>
+    <a class="nav-link" href="category.html?cat=bridal">Bridal</a>
+    <a class="nav-link" href="category.html?cat=gemstones">Gemstones</a>
+    <a class="nav-link" href="category.html?cat=high-jewelry">High Jewelry</a>
+    <a class="nav-link" href="category.html?cat=gifts">Gifts</a>
+  </div>
+  <div class="contact-wrap">
+    <button class="nav-cta" id="contactBtn" aria-haspopup="true" aria-expanded="false">Contact <span class="caret"></span></button>
+    <div class="contact-pop" id="contactPop">
+      <a class="cm-item" href="tel:+905334099901">
+        <span class="cm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span>
+        <span class="cm-txt"><span class="t">Call</span><span class="s">+90 533 409 99 01</span></span>
+      </a>
+      <a class="cm-item" href="https://wa.me/905334099901?text=Merhaba%20FENIX%2C%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener">
+        <span class="cm-ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.4 9.4 0 0 1-4.8-1.32l-.34-.2-3.57.94.95-3.48-.22-.36a9.39 9.39 0 0 1-1.44-5.02c0-5.19 4.23-9.41 9.43-9.41 2.52 0 4.88.98 6.66 2.76a9.34 9.34 0 0 1 2.76 6.66c0 5.19-4.23 9.42-9.42 9.42zm8.01-17.43A11.32 11.32 0 0 0 12.05.74C5.8.74.72 5.82.72 12.06c0 2 .52 3.95 1.52 5.67L.63 23.5l5.9-1.55a11.3 11.3 0 0 0 5.42 1.38h.01c6.24 0 11.32-5.08 11.32-11.32a11.25 11.25 0 0 0-3.22-7.94z"></path></svg></span>
+        <span class="cm-txt"><span class="t">WhatsApp Message</span><span class="s">Send a message</span></span>
+      </a>
+      <a class="cm-item" href="https://wa.me/905334099901" target="_blank" rel="noopener">
+        <span class="cm-ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.4 9.4 0 0 1-4.8-1.32l-.34-.2-3.57.94.95-3.48-.22-.36a9.39 9.39 0 0 1-1.44-5.02c0-5.19 4.23-9.41 9.43-9.41 2.52 0 4.88.98 6.66 2.76a9.34 9.34 0 0 1 2.76 6.66c0 5.19-4.23 9.42-9.42 9.42zm8.01-17.43A11.32 11.32 0 0 0 12.05.74C5.8.74.72 5.82.72 12.06c0 2 .52 3.95 1.52 5.67L.63 23.5l5.9-1.55a11.3 11.3 0 0 0 5.42 1.38h.01c6.24 0 11.32-5.08 11.32-11.32a11.25 11.25 0 0 0-3.22-7.94z"></path></svg></span>
+        <span class="cm-txt"><span class="t">WhatsApp Call</span><span class="s">Voice call</span></span>
+      </a>
+    </div>
+  </div>
+  <button class="nav-toggle" aria-label="Menu"><span></span><span></span></button>
+</nav>
+<div class="mobile-menu">
+  <a href="category.html?cat=rings">Rings</a>
+  <a href="category.html?cat=necklaces">Necklaces</a>
+  <a href="category.html?cat=bracelets">Bracelets</a>
+  <a href="category.html?cat=earrings">Earrings</a>
+  <a href="category.html?cat=bridal">Bridal</a>
+  <a href="category.html?cat=gemstones">Gemstones</a>
+  <a href="category.html?cat=high-jewelry">High Jewelry</a>
+  <a href="category.html?cat=gifts">Gifts</a>
+  <a href="tel:+905334099901">Contact</a>
+</div>
+
+<!-- ===== PRODUCT ===== -->
+<section class="pd" data-hero data-screen-label="Product detail">
+  <div class="container">
+    <a class="mono-muted reveal" id="crumb" href="category.html?cat=rings" style="display:inline-block;margin-bottom:34px">← Back to collection</a>
+    <div class="pd-grid">
+      <!-- LEFT -->
+      <div class="pd-gallery reveal">
+        <div class="stage" id="stage">
+          <img class="stage-img" id="stageImg" alt="">
+          <div class="stage-rim"></div>
+        </div>
+        <div class="pd-thumbs" id="pdThumbs" aria-label="Product images"></div>
+      </div>
+      <!-- RIGHT -->
+      <div class="pd-info reveal reveal-d1">
+        <h1 class="pd-name" id="pName">Ember Solitaire</h1>
+        <div class="pd-color-picker" id="pColorPicker" hidden>
+          <div class="pd-color-head">Color <strong id="pColorName"></strong></div>
+          <div class="pd-colors" id="pColors" role="group" aria-label="Product color"></div>
+        </div>
+        <p class="pd-meta-line" id="pMeta"></p>
+
+        <div class="pd-cta">
+          <a class="btn btn-solid" id="pWa" href="#" target="_blank" rel="noopener">Order <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- marquee divider -->
+  <div class="marquee-strip" style="margin-top:120px">
+    <div class="marquee" style="--mq-dur:30s"><div class="marquee-track" id="pdMq"></div></div>
+  </div>
+
+  <!-- related -->
+  <div class="related section-sm">
+    <div class="container">
+      <div class="related-head reveal">
+        <span class="eyebrow bracket">From the same collection</span>
+        <h2 class="display" id="relTitle">More from the fire</h2>
+      </div>
+      <div class="related-grid" id="related"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MAP ===== -->
+<div class="map-wrap">
+  <iframe title="FENIX location" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d199.5827436673573!2d28.24465254330533!3d36.83471815496688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14bfbf018aed5b31%3A0x4ca3ce0ec0e3dad2!2sFENIX%20JEWELRY!5e0!3m2!1str!2str!4v1781080185795!5m2!1str!2str"></iframe>
+  <a class="map-pin" href="https://maps.app.goo.gl/Qcufd2CRMY3cD5rm6" target="_blank" rel="noopener" style="pointer-events:auto;cursor:pointer;text-decoration:none"><div class="dot"></div></a>
+  <a class="map-open btn" href="https://maps.app.goo.gl/Qcufd2CRMY3cD5rm6" target="_blank" rel="noopener" style="position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:4;background:rgba(11,10,9,.72);font-size:11px;padding:14px 24px">Open in Google Maps <span class="arrow">→</span></a>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-marquee">
+    <div class="marquee" style="--mq-dur:34s">
+      <div class="marquee-track">
+        <span class="fm">From fire, everything begins.</span>
+        <span class="fm solid">From fire, everything begins.</span>
+        <span class="fm">From fire, everything begins.</span>
+        <span class="fm solid">From fire, everything begins.</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-inner container">
+    <div class="footer-cols">
+      <div class="footer-logo-col">
+        <div class="footer-logo"><img src="assets/img/logo.png?v=2" alt="FENIX Jewelry"></div>
+        <p class="footer-tag" style="font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:21px;line-height:1.5;color:var(--gold-soft)">Born from fire.<br>Worn forever.</p>
+      </div>
+      <div>
+        <h4>Collections</h4>
+        <div class="footer-cats">
+          <a class="btn" href="category.html?cat=rings">Rings <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=necklaces">Necklaces <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=bracelets">Bracelets <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=earrings">Earrings <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=bridal">Bridal <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=gemstones">Gemstones <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=high-jewelry">High Jewelry <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=gifts">Gifts <span class="arrow">→</span></a>
+        </div>
+      </div>
+      <div>
+        <h4>Maison</h4>
+        <ul>
+          <li><a href="index.html#collections">Collections</a></li>
+          <li><a href="index.html#location">Our Location</a></li>
+          <li><a href="https://wa.me/905334099901?text=Hello%20FENIX%2C%20I'd%20like%20to%20book%20a%20visit." target="_blank" rel="noopener">Book a visit</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Reach us</h4>
+        <ul>
+          <li><a href="https://wa.me/905334099901?text=Hello%20FENIX%2C%20I'd%20like%20to%20learn%20more%20about%20your%20collections." target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="tel:+905334099901">+90 533 409 99 01</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="mono-muted">© 2026 FENIX JEWELRY</span>
+      <a class="back-top" href="#" data-top>Back to top <span style="transform:rotate(-45deg);display:inline-block">↑</span></a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== WHATSAPP FLOAT ===== -->
+<a class="wa-float" id="floatWa" href="https://wa.me/905334099901?text=Hello%20FENIX%2C%20I'd%20like%20to%20learn%20more%20about%20your%20collections." target="_blank" rel="noopener" aria-label="Request via WhatsApp">
+  <span class="wa-ico"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 6L4 29l8.2-1.5c1.7.9 3.7 1.4 5.8 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-4.3.8.8-4.2-.2-.4c-1-1.6-1.5-3.4-1.5-5.2C5.2 9.5 10 5.2 16 5.2c5.9 0 10.8 4.8 10.8 10.8S21.9 24.8 16 24.8zm5.9-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.3-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.6.1-.2.2-.3.3-.5.1-.2 0-.4 0-.6 0-.2-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.1 4.6.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.9-.8 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4z"/></svg></span>
+  <span class="wa-label">Request via WhatsApp</span>
+</a>
+
+<script src="assets/fenix.data.js?v=20260612-3"></script>
+<script src="assets/fenix.products.js?v=20260612-3"></script>
+<script src="assets/fenix.js?v=20260612-3"></script>
+<script>
+(function(){
+  var params=new URLSearchParams(location.search);
+  var key=params.get('cat')||'rings';
+  if(!Object.prototype.hasOwnProperty.call(FENIX.categories,key)){ key='rings'; }
+  var id=params.get('id')||'';
+  var cat=FENIX.categories[key];
+  var products=(window.FENIX_PRODUCTS||[]).filter(function(p){return p.category===key;});
+  var p=products.find(function(item){return item.slug===id||item.id===id;});
+  if(!p && /^\d+$/.test(id)){p=products[parseInt(id,10)];}
+  p=p||products[0];
+  if(!p){location.href='category.html?cat='+encodeURIComponent(key);return;}
+
+  function escapeHtml(value){
+    return String(value||'').replace(/[&<>"']/g,function(char){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char];
+    });
+  }
+  function imageUrl(image){
+    var value=(image&&(image.safePath||image.path))||'';
+    return value.replace(/^\/products\//,'public/products/');
+  }
+  var title=p.title||p.slug;
+
+  document.title='FENIX Jewelry — '+title;
+  document.getElementById('crumb').setAttribute('href','category.html?cat='+key);
+  document.getElementById('crumb').textContent='← '+cat.title;
+  document.getElementById('pName').textContent=title;
+  var meta=[p.imageCount+' image'+(p.imageCount===1?'':'s')];
+  document.getElementById('pMeta').textContent=meta.join(' · ');
+
+  function normalizeColor(value){
+    var normalized=String(value||'').toLowerCase();
+    if(/rose go(?:d|ld)/.test(normalized)){return {name:'Rose Gold',key:'rose-gold'};}
+    if(normalized.indexOf('white gold')!==-1){return {name:'White Gold',key:'white-gold'};}
+    if(normalized.indexOf('yellow gold')!==-1){return {name:'Yellow Gold',key:'yellow-gold'};}
+    if(normalized.indexOf('silver')!==-1){return {name:'Silver',key:'silver'};}
+    if(normalized==='gold'||normalized.indexOf('multi gold')!==-1){return {name:'Gold',key:'gold'};}
+    return null;
+  }
+  var productColors=[];
+  (p.variantColors||[]).forEach(function(value){
+    var color=normalizeColor(value);
+    if(color&&!productColors.some(function(item){return item.key===color.key;})){productColors.push(color);}
+  });
+  if(productColors.some(function(color){return /-gold$/.test(color.key);})&&productColors.length>1){
+    productColors=productColors.filter(function(color){return color.key!=='gold';});
+  }
+  var colorOrder={'yellow-gold':0,'white-gold':1,'rose-gold':2,'gold':3,'silver':4};
+  productColors.sort(function(a,b){return colorOrder[a.key]-colorOrder[b.key];});
+  var selectedColor=productColors.find(function(color){
+    return p.variantImages&&p.variantImages[color.key];
+  })||productColors[0]||null;
+  function updateWa(){
+    var colorText=selectedColor?' in '+selectedColor.name:'';
+    var msg=encodeURIComponent("Hello FENIX, I'd like to request information about "+title+colorText+".");
+    var waUrl='https://wa.me/905334099901?text='+msg;
+    document.getElementById('pWa').setAttribute('href',waUrl);
+    document.getElementById('floatWa').setAttribute('href',waUrl);
+  }
+
+  // single product shot
+  var stageImg=document.getElementById('stageImg');
+  var images=p.images||[];
+  function selectImage(index){
+    var image=images[index]||images[0];
+    stageImg.src=imageUrl(image);
+    stageImg.alt=title+' image '+(index+1);
+    document.querySelectorAll('.pd-thumb').forEach(function(button,i){
+      button.classList.toggle('active',i===index);
+    });
+  }
+  stageImg.addEventListener('error',function(){stageImg.src='assets/img/image-placeholder.png';},{once:true});
+  document.getElementById('pdThumbs').innerHTML=images.map(function(image,index){
+    return '<button class="pd-thumb'+(index===0?' active':'')+'" type="button" data-image="'+index+'" aria-label="View image '+(index+1)+'">'+
+      '<img src="'+escapeHtml(imageUrl(image))+'" alt="" loading="lazy" decoding="async"></button>';
+  }).join('');
+  document.querySelectorAll('.pd-thumb').forEach(function(button){
+    button.addEventListener('click',function(){selectImage(parseInt(button.getAttribute('data-image'),10));});
+  });
+  document.querySelectorAll('.pd-thumb img').forEach(function(img){
+    img.addEventListener('error',function(){img.src='assets/img/image-placeholder.png';},{once:true});
+  });
+  selectImage(0);
+
+  var colorPicker=document.getElementById('pColorPicker');
+  if(productColors.length){
+    colorPicker.hidden=false;
+    document.getElementById('pColors').innerHTML=productColors.map(function(color,index){
+      var active=selectedColor&&selectedColor.key===color.key;
+      return '<button class="pd-color'+(active?' active':'')+'" type="button" data-color="'+color.key+
+        '" aria-label="'+escapeHtml(color.name)+'" aria-pressed="'+(active?'true':'false')+'" title="'+escapeHtml(color.name)+'"><span></span></button>';
+    }).join('');
+    document.getElementById('pColorName').textContent=selectedColor.name;
+    document.querySelectorAll('.pd-color').forEach(function(button,index){
+      button.addEventListener('click',function(){
+        selectedColor=productColors[index];
+        document.getElementById('pColorName').textContent=selectedColor.name;
+        document.querySelectorAll('.pd-color').forEach(function(item){
+          var active=item===button;
+          item.classList.toggle('active',active);
+          item.setAttribute('aria-pressed',active?'true':'false');
+        });
+        var mappedPath=p.variantImages&&p.variantImages[selectedColor.key];
+        var matchingImage=images.findIndex(function(image){
+          return mappedPath?(image.safePath||image.path)===mappedPath:image.color===selectedColor.key;
+        });
+        if(matchingImage>=0){selectImage(matchingImage);}
+        updateWa();
+      });
+    });
+    var initialPath=p.variantImages&&p.variantImages[selectedColor.key];
+    var initialImage=images.findIndex(function(image){
+      return initialPath?(image.safePath||image.path)===initialPath:image.color===selectedColor.key;
+    });
+    if(initialImage>=0){selectImage(initialImage);}
+  }
+  updateWa();
+
+  // subtle scroll parallax zoom
+  var stage=document.getElementById('stage');
+  window.addEventListener('scroll',function(){
+    var r=stage.getBoundingClientRect();
+    var prog=(window.innerHeight - r.top)/(window.innerHeight+r.height);
+    var sc=1.04 + Math.max(0,Math.min(1,prog))*0.12;
+    stageImg.style.transform='scale('+sc.toFixed(3)+')';
+  },{passive:true});
+
+  // related marquee
+  var mqItem='<span class="item">'+cat.title.toUpperCase()+'<span class="dot">—</span>FROM THE SAME FIRE<span class="dot">—</span></span>';
+  document.getElementById('pdMq').innerHTML=mqItem+mqItem+mqItem+mqItem;
+
+  // related — 4 others from same category
+  var rel=products.filter(function(x){return x.id!==p.id;}).slice(0,4);
+  document.getElementById('relTitle').textContent='More '+cat.title;
+  document.getElementById('related').innerHTML=rel.map(function(x){
+    var relTitle=x.title||x.slug;
+    return '<a class="r-card" href="product.html?cat='+encodeURIComponent(key)+'&id='+encodeURIComponent(x.slug)+'">'+
+      '<div class="r-shot"><img class="r-img" src="'+escapeHtml(imageUrl(x.images&&x.images[0]))+'" alt="'+escapeHtml(relTitle)+'" loading="lazy" decoding="async"></div>'+
+      '<div class="r-meta"><span class="r-name">'+escapeHtml(relTitle)+'</span></div>'+
+    '</a>';
+  }).join('');
+  document.querySelectorAll('.r-img').forEach(function(img){
+    img.addEventListener('error',function(){img.src='assets/img/image-placeholder.png';},{once:true});
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FENIX Jewelry — Born from Fire. Worn Forever.</title>
+<meta name="description" content="FENIX — a Marmaris fine-jewelry maison. Diamonds and gold, born from fire.">
+<link rel="stylesheet" href="assets/fenix.css?v=20260612-3">
+<style>
+/* ============ PAGE 1 — LANDING ============ */
+.hero{position:relative;height:100svh;min-height:680px;overflow:hidden;background:var(--obsidian);}
+.hero-slides{position:absolute;inset:0;}
+.hero-slide{position:absolute;inset:0;opacity:0;}
+.hero-ready .hero-slide{transition:opacity 1.6s var(--ease);}
+.hero-slide.active{opacity:1;}
+.hero-img{position:absolute;inset:-4%;background-size:cover;background-position:center 28%;transform:scale(1.04);}
+.hero-slide.active .hero-img{animation:kenburns 6.8s var(--ease) forwards;}
+@keyframes kenburns{from{transform:scale(1.04);}to{transform:scale(1.13);}}
+.hero-scrim{position:absolute;inset:0;background:
+  linear-gradient(to bottom, rgba(11,10,9,.55) 0%, rgba(11,10,9,.06) 19%, rgba(11,10,9,0) 36%, rgba(11,10,9,.42) 57%, rgba(11,10,9,.93) 86%, rgba(11,10,9,1) 100%),
+  radial-gradient(135% 95% at 50% 38%, transparent 46%, rgba(11,10,9,.5) 100%);}
+.hero-content{position:absolute;left:0;right:0;bottom:13%;text-align:center;z-index:3;padding:0 24px;}
+.hero-title{font-size:clamp(41px,7.9vw,125px);color:var(--ivory);
+  text-shadow:0 2px 60px rgba(0,0,0,.55);margin:0;font-weight:400;}
+.hero-title .glint{color:var(--ivory);}
+.hero .eyebrow{text-shadow:0 1px 20px rgba(0,0,0,.6);}
+.scroll-hint{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:14px;}
+.scroll-hint .chev{width:14px;height:14px;border-right:1px solid var(--gold);border-bottom:1px solid var(--gold);transform:rotate(45deg);animation:bob 2s var(--ease) infinite;}
+.scroll-hint .ln{width:1px;height:54px;background:linear-gradient(var(--gold),transparent);}
+@keyframes bob{0%,100%{transform:rotate(45deg) translate(0,0);opacity:.4;}50%{transform:rotate(45deg) translate(3px,3px);opacity:1;}}
+
+/* INTRO */
+.intro-grid{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:46px;align-items:center;}
+.intro-copy{text-align:center;padding:0 10px;}
+.intro-copy .lede{margin-top:30px;}
+.intro-img{height:520px;}
+.intro-img.a{margin-top:-40px;}
+.intro-img.b{margin-top:60px;}
+
+/* COLLECTIONS film-strip */
+.collections-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin-bottom:64px;}
+.collections-head h2{font-size:clamp(34px,4.6vw,72px);margin:14px 0 0;max-width:9ch;line-height:1.0;}
+.film{overflow:hidden;width:100%;padding:30px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);}
+.film-track{display:flex;gap:30px;width:max-content;animation:film 46s linear infinite;}
+.film:hover .film-track{animation-play-state:paused;}
+@keyframes film{to{transform:translateX(calc(-50% - 15px));}}
+.coll-card{position:relative;width:340px;flex:0 0 340px;cursor:pointer;transition:transform .6s var(--ease-out);}
+.coll-card .ph{height:440px;transition:box-shadow .6s var(--ease);}
+.coll-card .coll-meta{display:flex;justify-content:space-between;align-items:flex-end;margin-top:20px;}
+.coll-card .coll-name{font-family:var(--display);font-size:23px;text-transform:uppercase;letter-spacing:.05em;color:var(--ivory);transition:color .4s var(--ease);}
+.coll-card .coll-sub{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:8px;}
+.coll-card .coll-arrow{width:42px;height:42px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold);opacity:0;transform:translateX(-8px);transition:.5s var(--ease);flex:0 0 auto;}
+.film:hover .coll-card:hover{transform:translateY(-18px) scale(1.04);z-index:5;}
+.film:hover .coll-card:hover .ph{box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 0 1px var(--line);}
+.coll-card:hover .coll-name{color:var(--gold-soft);}
+.coll-card:hover .coll-arrow{opacity:1;transform:none;}
+
+/* DIAMOND centerpiece */
+.diamond-sec{padding:170px 0;text-align:center;position:relative;overflow:hidden;}
+.diamond-sec .bg-ember{position:absolute;left:50%;top:50%;width:900px;height:900px;transform:translate(-50%,-50%);
+  background:radial-gradient(circle, rgba(255,77,28,.10),rgba(201,162,78,.06) 35%,transparent 62%);pointer-events:none;}
+.diamond-stage{position:relative;height:440px;display:flex;align-items:center;justify-content:center;margin:50px 0;}
+.pool{position:absolute;bottom:96px;left:50%;transform:translateX(-50%);width:420px;height:120px;
+  background:radial-gradient(ellipse at center, rgba(201,162,78,.55),rgba(154,122,56,.22) 45%,transparent 72%);
+  filter:blur(14px);animation:poolPulse 5s var(--ease) infinite;}
+@keyframes poolPulse{50%{opacity:.6;transform:translateX(-50%) scale(1.06);}}
+.gem-wrap{position:relative;width:280px;height:280px;}
+.gem{width:280px;height:280px;border-radius:50%;
+  background:conic-gradient(from calc(var(--spin)) ,
+    #f5efe4 0deg 10deg,#c9a24e 10deg 22deg,#7a5f2c 22deg 30deg,
+    #efe6d4 30deg 44deg,#b89a63 44deg 56deg,#ff7a3c 56deg 62deg,
+    #f5efe4 62deg 74deg,#9a7a38 74deg 86deg,#e8dcc4 86deg 100deg,
+    #c9a24e 100deg 112deg,#6f5527 112deg 120deg,#f5efe4 120deg 134deg,
+    #b89a63 134deg 146deg,#ff7a3c 146deg 152deg,#efe6d4 152deg 166deg,
+    #9a7a38 166deg 180deg,#f5efe4 180deg 196deg,#c9a24e 196deg 208deg,
+    #7a5f2c 208deg 216deg,#efe6d4 216deg 232deg,#b89a63 232deg 244deg,
+    #ff7a3c 244deg 250deg,#f5efe4 250deg 264deg,#9a7a38 264deg 278deg,
+    #e8dcc4 278deg 292deg,#c9a24e 292deg 304deg,#6f5527 304deg 312deg,
+    #f5efe4 312deg 326deg,#b89a63 326deg 340deg,#ff7a3c 340deg 346deg,#efe6d4 346deg 360deg);
+  box-shadow:inset 0 0 50px rgba(11,10,9,.35),0 0 70px rgba(201,162,78,.4),0 0 140px rgba(255,77,28,.18);
+  transform:var(--auto-spin) rotate(var(--spin));--auto-spin:rotate(0deg);
+  animation:gemAuto 60s linear infinite;}
+@keyframes gemAuto{to{--auto-spin:rotate(360deg);}}
+.gem::before{content:'';position:absolute;inset:24%;border-radius:50%;
+  background:conic-gradient(from calc(0deg - var(--spin)),#fff8ec,#d8b970,#fff8ec,#b89a63,#fff8ec,#c9a24e,#fff8ec,#9a7a38,#fff8ec);
+  box-shadow:inset 0 0 26px rgba(11,10,9,.4),0 0 16px rgba(255,255,255,.4);}
+.gem::after{content:'';position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at 38% 32%, rgba(255,255,255,.9),transparent 18%),radial-gradient(circle at 64% 70%, rgba(255,255,255,.5),transparent 16%);
+  mix-blend-mode:screen;}
+.gem-glint{position:absolute;inset:-30px;pointer-events:none;color:var(--ivory);}
+.gem-glint i{position:absolute;background:#fff;border-radius:50%;width:3px;height:3px;box-shadow:0 0 8px #fff,0 0 16px var(--gold);}
+.gem-glint i:nth-child(1){top:18%;left:20%;animation:tw 3.2s var(--ease) infinite;}
+.gem-glint i:nth-child(2){top:70%;left:74%;animation:tw 2.6s var(--ease) .7s infinite;}
+.gem-glint i:nth-child(3){top:30%;left:80%;animation:tw 3.6s var(--ease) 1.4s infinite;}
+@keyframes tw{0%,100%{opacity:0;transform:scale(.4);}50%{opacity:1;transform:scale(1.4);}}
+@media (prefers-reduced-motion:reduce){.gem{animation:none;}.pool{animation:none;}}
+
+/* WHY FENIX */
+.chapter{position:relative;height:84vh;min-height:560px;display:flex;align-items:center;overflow:hidden;border-top:1px solid var(--line-soft);}
+.chapter-bg{position:absolute;inset:-12% 0;z-index:0;}
+.chapter-bg .ph{position:absolute;inset:0;height:124%;}
+.chapter-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,10,9,.92) 0%,rgba(11,10,9,.55) 50%,rgba(11,10,9,.85) 100%);}
+.chapter-inner{position:relative;z-index:2;width:100%;}
+.chapter-copy{max-width:560px;}
+.chapter-copy .idx{display:block;margin-bottom:24px;}
+.chapter-copy h3{font-family:var(--display);font-size:clamp(34px,4.4vw,62px);text-transform:uppercase;letter-spacing:.04em;margin:0 0 26px;line-height:1.04;color:var(--ivory);}
+.chapter-copy p{font-size:19px;line-height:1.8;color:var(--ivory);opacity:.86;max-width:46ch;font-weight:300;}
+.chapter .vert-word{position:absolute;font-size:clamp(40px,7vw,104px);z-index:1;top:50%;transform:translateY(-50%);}
+.chapter .vert-word.r{right:60px;}
+.chapter .vert-word.l{left:60px;}
+.chapter.alt .chapter-inner .container{display:flex;justify-content:flex-end;}
+
+/* ATELIER */
+.atelier{position:relative;}
+.atelier-img{height:620px;position:relative;}
+.atelier-card{position:absolute;right:8%;bottom:-60px;background:var(--charcoal);border:1px solid var(--line);
+  padding:54px 56px;max-width:460px;z-index:4;box-shadow:0 40px 80px rgba(0,0,0,.5);}
+.atelier-card h2{font-family:var(--display);font-size:38px;text-transform:uppercase;letter-spacing:.04em;margin:18px 0 22px;line-height:1.05;}
+.atelier-card .addr{font-size:16px;line-height:1.75;color:var(--ivory);opacity:.85;margin-bottom:8px;}
+.atelier-card .hours{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase;margin-bottom:30px;line-height:2;}
+
+/* CONTACT */
+.contact{text-align:center;}
+.contact h2{font-family:var(--display);font-size:clamp(40px,6vw,90px);text-transform:uppercase;letter-spacing:.04em;margin:18px 0 16px;}
+.contact-lead{color:var(--muted);font-size:18px;max-width:42ch;margin:0 auto 56px;line-height:1.7;}
+.contact-rows{max-width:680px;margin:0 auto;border-top:1px solid var(--line-soft);}
+.contact-row{display:flex;justify-content:space-between;align-items:center;padding:26px 6px;border-bottom:1px solid var(--line-soft);transition:padding .4s var(--ease);}
+.contact-row:hover{padding-left:22px;padding-right:0;}
+.contact-row .k{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);}
+.contact-row .v{font-family:var(--display);font-size:clamp(20px,2.4vw,30px);color:var(--ivory);letter-spacing:.02em;transition:color .4s var(--ease);}
+.contact-row:hover .v{color:var(--gold-soft);}
+
+/* photo fills */
+.intro-photo{width:100%;height:100%;background-size:cover;background-position:center;filter:saturate(.97) contrast(1.02);}
+.atelier-photo{position:absolute;inset:0;background-size:cover;background-position:center 26%;}
+.atelier-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(11,10,9,.5),rgba(11,10,9,.32) 38%,rgba(11,10,9,.82));}
+.coll-photo{background-size:cover;background-position:center 22%;}
+.coll-photo::before{display:none;}
+.coll-photo-scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(11,10,9,.72),rgba(11,10,9,.12) 55%,rgba(11,10,9,.28));}
+.footer-motto{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:21px;line-height:1.5;color:var(--gold-soft);}
+.map-open{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:4;background:rgba(11,10,9,.72);font-size:11px;padding:14px 24px;}
+.map-pin{pointer-events:auto;cursor:pointer;text-decoration:none;}
+
+@media (max-width:920px){
+  .intro-grid{grid-template-columns:1fr;}
+  .intro-img{display:none;}
+  .chapter .vert-word{display:none;}
+  .atelier-card{position:static;max-width:none;margin:0 24px;transform:translateY(-50px);}
+  .atelier-img{height:420px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav">
+  <a class="nav-logo" href="index.html"><img src="assets/img/logo.png?v=2" alt="FENIX Jewelry"></a>
+  <div class="nav-group right">
+    <a class="nav-link" href="category.html?cat=rings">Rings</a>
+    <a class="nav-link" href="category.html?cat=necklaces">Necklaces</a>
+    <a class="nav-link" href="category.html?cat=bracelets">Bracelets</a>
+    <a class="nav-link" href="category.html?cat=earrings">Earrings</a>
+    <a class="nav-link" href="category.html?cat=bridal">Bridal</a>
+    <a class="nav-link" href="category.html?cat=gemstones">Gemstones</a>
+    <a class="nav-link" href="category.html?cat=high-jewelry">High Jewelry</a>
+    <a class="nav-link" href="category.html?cat=gifts">Gifts</a>
+  </div>
+  <div class="contact-wrap">
+    <button class="nav-cta" id="contactBtn" aria-haspopup="true" aria-expanded="false">Contact <span class="caret"></span></button>
+    <div class="contact-pop" id="contactPop">
+      <a class="cm-item" href="tel:+905334099901">
+        <span class="cm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span>
+        <span class="cm-txt"><span class="t">Call</span><span class="s">+90 533 409 99 01</span></span>
+      </a>
+      <a class="cm-item" href="https://wa.me/905334099901" target="_blank" rel="noopener">
+        <span class="cm-ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.22 3.08.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.4 9.4 0 0 1-4.8-1.32l-.34-.2-3.57.94.95-3.48-.22-.36a9.39 9.39 0 0 1-1.44-5.02c0-5.19 4.23-9.41 9.43-9.41 2.52 0 4.88.98 6.66 2.76a9.34 9.34 0 0 1 2.76 6.66c0 5.19-4.23 9.42-9.42 9.42zm8.01-17.43A11.32 11.32 0 0 0 12.05.74C5.8.74.72 5.82.72 12.06c0 2 .52 3.95 1.52 5.67L.63 23.5l5.9-1.55a11.3 11.3 0 0 0 5.42 1.38h.01c6.24 0 11.32-5.08 11.32-11.32a11.25 11.25 0 0 0-3.22-7.94z"></path></svg></span>
+        <span class="cm-txt"><span class="t">WhatsApp Message</span><span class="s">Send a message</span></span>
+      </a>
+    </div>
+  </div>
+  <button class="nav-toggle" aria-label="Menu"><span></span><span></span></button>
+</nav>
+<div class="mobile-menu">
+  <a href="category.html?cat=rings">Rings</a>
+  <a href="category.html?cat=necklaces">Necklaces</a>
+  <a href="category.html?cat=bracelets">Bracelets</a>
+  <a href="category.html?cat=earrings">Earrings</a>
+  <a href="category.html?cat=bridal">Bridal</a>
+  <a href="category.html?cat=gemstones">Gemstones</a>
+  <a href="category.html?cat=high-jewelry">High Jewelry</a>
+  <a href="category.html?cat=gifts">Gifts</a>
+  <a href="tel:+905334099901">Contact</a>
+</div>
+
+<!-- ===== 1. HERO ===== -->
+<header class="hero" data-hero data-screen-label="Hero">
+  <div class="hero-slides">
+    <div class="hero-slide active"><div class="hero-img" style="background-image:url(assets/img/hero1.png)"></div></div>
+    <div class="hero-slide"><div class="hero-img" style="background-image:url(assets/img/hero2.png)"></div></div>
+    <div class="hero-slide"><div class="hero-img" style="background-image:url(assets/img/hero3.png)"></div></div>
+    <div class="hero-slide"><div class="hero-img" style="background-image:url(assets/img/hero4.png)"></div></div>
+  </div>
+  <div class="hero-scrim"></div>
+  <div class="hero-content" data-parallax="-0.06">
+    <h1 class="display hero-title">Born from fire.<br>Worn forever<span class="glint">.</span></h1>
+  </div>
+</header>
+
+<!-- ===== 2. MARQUEE ===== -->
+<div class="marquee-strip">
+  <div class="marquee" style="--mq-dur:30s">
+    <div class="marquee-track" aria-hidden="false">
+      <span class="item">FENIX JEWELRY<span class="dot">—</span>MARMARİS<span class="dot">—</span></span>
+      <span class="item">FENIX JEWELRY<span class="dot">—</span>MARMARİS<span class="dot">—</span></span>
+      <span class="item">FENIX JEWELRY<span class="dot">—</span>MARMARİS<span class="dot">—</span></span>
+      <span class="item">FENIX JEWELRY<span class="dot">—</span>MARMARİS<span class="dot">—</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 4. COLLECTIONS ===== -->
+<section class="section" id="collections">
+  <div class="container">
+    <div class="collections-head reveal">
+      <div>
+        <span class="eyebrow bracket">The Collections</span>
+        <h2 class="display">Eight ways to wear the fire.</h2>
+      </div>
+      <a class="btn" href="category.html?cat=rings">View all <span class="arrow">→</span></a>
+    </div>
+  </div>
+  <div class="film reveal reveal-d1">
+    <div class="film-track" id="filmTrack"><!-- injected --></div>
+  </div>
+</section>
+
+<!-- ===== OUR LOCATION ===== -->
+<section class="atelier section" id="location" style="padding-bottom:120px">
+  <div class="container">
+    <span class="eyebrow bracket reveal">Our Location</span>
+  </div>
+  <div class="atelier-img reveal" style="margin-top:30px">
+    <div class="atelier-photo" style="background-image:url(assets/img/phoenix-location.png);background-position:center 40%"></div>
+    <div class="atelier-scrim"></div>
+    <div class="atelier-card reveal reveal-d1">
+      <span class="mono bracket">Visit</span>
+      <h2 class="display">Our Location</h2>
+      <a class="btn btn-solid" href="https://maps.app.goo.gl/XTGQg2DSkKmFZbY49" target="_blank" rel="noopener">Visit us <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REACH THE FIRE ===== -->
+<section class="section contact" id="reach" style="padding-top:150px">
+  <div class="container">
+    <span class="eyebrow bracket reveal">Reach Us</span>
+    <h2 class="display reveal reveal-d1">Reach the fire.</h2>
+    <p class="contact-lead reveal reveal-d1">For private viewings and bespoke requests,<br>reach us directly.</p>
+    <div class="reveal reveal-d2" style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-top:6px">
+      <a class="btn btn-solid" href="https://wa.me/905334099901?text=Hello%20FENIX%2C%20I'd%20like%20to%20learn%20more%20about%20your%20collections." target="_blank" rel="noopener">Request via WhatsApp <span class="arrow">→</span></a>
+      <a class="btn" href="tel:+905334099901">Call +90 533 409 99 01</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MAP ===== -->
+<div class="map-wrap">
+  <iframe title="FENIX location" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d199.5827436673573!2d28.24465254330533!3d36.83471815496688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14bfbf018aed5b31%3A0x4ca3ce0ec0e3dad2!2sFENIX%20JEWELRY!5e0!3m2!1str!2str!4v1781080185795!5m2!1str!2str"></iframe>
+  <a class="map-open btn" href="https://maps.app.goo.gl/XTGQg2DSkKmFZbY49" target="_blank" rel="noopener">Open in Google Maps <span class="arrow">→</span></a>
+</div>
+
+<!-- ===== 10. FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-marquee">
+    <div class="marquee" style="--mq-dur:34s">
+      <div class="marquee-track">
+        <span class="fm">From fire, everything begins.</span>
+        <span class="fm solid">From fire, everything begins.</span>
+        <span class="fm">From fire, everything begins.</span>
+        <span class="fm solid">From fire, everything begins.</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-inner container">
+    <div class="footer-cols">
+      <div class="footer-logo-col">
+        <div class="footer-logo"><img src="assets/img/logo.png?v=2" alt="FENIX Jewelry"></div>
+        <p class="footer-tag footer-motto">Born from fire.<br>Worn forever.</p>
+      </div>
+      <div>
+        <h4>Collections</h4>
+        <div class="footer-cats">
+          <a class="btn" href="category.html?cat=rings">Rings <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=necklaces">Necklaces <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=bracelets">Bracelets <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=earrings">Earrings <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=bridal">Bridal <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=gemstones">Gemstones <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=high-jewelry">High Jewelry <span class="arrow">→</span></a>
+          <a class="btn" href="category.html?cat=gifts">Gifts <span class="arrow">→</span></a>
+        </div>
+      </div>
+      <div>
+        <h4>Maison</h4>
+        <ul>
+          <li><a href="index.html#collections">Collections</a></li>
+          <li><a href="index.html#location">Our Location</a></li>
+          <li><a href="https://maps.app.goo.gl/XTGQg2DSkKmFZbY49" target="_blank" rel="noopener">Visit us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Reach us</h4>
+        <ul>
+          <li><a href="https://wa.me/905334099901?text=Hello%20FENIX%2C%20I'd%20like%20to%20learn%20more%20about%20your%20collections." target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="tel:+905334099901">+90 533 409 99 01</a></li>
+          <li><a href="https://instagram.com/fenixjewelrymarmaris" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://facebook.com/fenixjewelrymarmaris" target="_blank" rel="noopener">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="mono-muted">© 2026 FENIX JEWELRY</span>
+      <a class="back-top" href="#" data-top>Back to top <span style="transform:rotate(-45deg);display:inline-block">↑</span></a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== WHATSAPP FLOAT ===== -->
+<a class="wa-float" href="https://wa.me/905334099901?text=Hello%20FENIX%2C%20I'd%20like%20to%20learn%20more%20about%20your%20collections." target="_blank" rel="noopener" aria-label="Request via WhatsApp">
+  <span class="wa-ico"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 6L4 29l8.2-1.5c1.7.9 3.7 1.4 5.8 1.4 6.6 0 12-5.4 12-12S22.6 3 16 3zm0 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-4.3.8.8-4.2-.2-.4c-1-1.6-1.5-3.4-1.5-5.2C5.2 9.5 10 5.2 16 5.2c5.9 0 10.8 4.8 10.8 10.8S21.9 24.8 16 24.8zm5.9-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.4-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.3-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.6.1-.2.2-.3.3-.5.1-.2 0-.4 0-.6 0-.2-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.2.2 2.1 3.3 5.1 4.6.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.9-.8 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.2-.6-.4z"/></svg></span>
+  <span class="wa-label">Request via WhatsApp</span>
+</a>
+
+<script src="assets/fenix.js?v=20260612-3"></script>
+<script>
+/* Build the collections film-strip (duplicated for seamless loop) */
+(function(){
+  var cats = [
+    {name:'Rings', slug:'rings', img:'assets/img/slider-rings.png', pos:46},
+    {name:'Necklaces', slug:'necklaces', img:'assets/img/slider-necklace.png', pos:46},
+    {name:'Bracelets', slug:'bracelets', img:'assets/img/slider-bracelet.png', pos:50},
+    {name:'Earrings', slug:'earrings', img:'assets/img/slider-earrings.png', pos:48},
+    {name:'Bridal', slug:'bridal', img:'assets/img/slider-bridal.png', pos:46},
+    {name:'Gemstones', slug:'gemstones', img:'assets/img/slider-gem-stones.png', pos:48},
+    {name:'High Jewelry', slug:'high-jewelry', img:'assets/img/slider-high-jewelry.png', pos:46},
+    {name:'Gifts', slug:'gifts', img:'assets/img/slider-gifts.png', pos:46}
+  ];
+  function card(c,i){
+    return '<a class="coll-card" href="category.html?cat='+c.slug+'">'+
+      '<div class="ph coll-photo" style="background-image:url('+c.img+');background-position:center '+c.pos+'%">'+
+        '<div class="coll-photo-scrim"></div>'+
+        '<div class="corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>'+
+      '</div>'+
+      '<div class="coll-meta"><div><div class="coll-name">'+c.name+'</div></div>'+
+      '<div class="coll-arrow">→</div></div>'+
+    '</a>';
+  }
+  var html = cats.map(card).join('') + cats.map(card).join('');
+  document.getElementById('filmTrack').innerHTML = html;
+})();
+</script>
+</body>
+</html>
