@@ -4,12 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FENIX Jewelry — Collection</title>
+<script>
+(function(){
+  var categories={
+    rings:['assets/img/rings-hero.png','center 30%'],
+    necklaces:['assets/img/necklaces-hero.png','center 30%'],
+    bracelets:['assets/img/bracelets-hero.png','center 28%'],
+    earrings:['assets/img/earrings-hero.png','center 26%'],
+    bridal:['assets/img/bridal-hero.png','center 28%'],
+    gemstones:['assets/img/gemstones-hero.png','center 30%'],
+    'high-jewelry':['assets/img/high-jewelry-hero.png','center 24%'],
+    gifts:['assets/img/gifts-hero.png','center 30%']
+  };
+  var key=new URLSearchParams(location.search).get('cat')||'rings';
+  if(!Object.prototype.hasOwnProperty.call(categories,key)){key='rings';}
+  var category=categories[key];
+  document.documentElement.style.setProperty('--category-hero','url("'+category[0]+'")');
+  document.documentElement.style.setProperty('--category-hero-position',category[1]);
+  var preload=document.createElement('link');
+  preload.rel='preload';
+  preload.as='image';
+  preload.href=category[0];
+  document.head.appendChild(preload);
+})();
+</script>
 <link rel="stylesheet" href="assets/fenix.css?v=20260612-3">
 <style>
 /* ============ PAGE 2 — CATEGORY ============ */
 .cat-hero{position:relative;min-height:80vh;display:flex;flex-direction:column;justify-content:flex-end;
   padding-top:var(--nav-h);overflow:hidden;}
-.cat-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 40%;z-index:0;}
+.cat-hero-bg{position:absolute;inset:0;background-image:var(--category-hero);background-size:cover;
+  background-position:var(--category-hero-position,center 40%);z-index:0;}
 .cat-hero-bg.kb{animation:catKb 9s var(--ease) forwards;}
 @keyframes catKb{from{transform:scale(1.05);}to{transform:scale(1.12);}}
 .cat-hero-scrim{position:absolute;inset:0;z-index:1;background:
@@ -111,7 +136,7 @@
 
 <!-- ===== HEADER ===== -->
 <section class="cat-hero" data-hero data-screen-label="Category header">
-  <div class="cat-hero-bg kb" id="catHeroBg" style="background-image:url(assets/img/rings-hero.png);background-position:center 30%"></div>
+  <div class="cat-hero-bg kb" id="catHeroBg"></div>
   <div class="cat-hero-scrim"></div>
   <div class="container cat-hero-content">
     <h1 class="cat-title reveal reveal-d1" id="catTitle">Diamond Rings</h1>
