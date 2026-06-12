@@ -5,6 +5,40 @@
   'use strict';
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- OPENING LOADER: wait for the first hero image ---------- */
+  var loader = document.querySelector('[data-site-loader]');
+  var pageReadyResolve;
+  if(loader){
+    window.fenixPageReady = new Promise(function(resolve){ pageReadyResolve = resolve; });
+    var loaderStarted = Date.now();
+    var loaderFinished = false;
+    var loaderMinimum = reduce ? 100 : 500;
+    function finishLoader(){
+      if(loaderFinished) return;
+      loaderFinished = true;
+      var remaining = Math.max(0, loaderMinimum - (Date.now() - loaderStarted));
+      setTimeout(function(){
+        loader.classList.add('is-done');
+        document.body.classList.remove('is-loading');
+        if(pageReadyResolve) pageReadyResolve();
+        setTimeout(function(){ if(loader.parentNode) loader.parentNode.removeChild(loader); }, 700);
+      }, remaining);
+    }
+    var firstHeroImage = document.querySelector('[data-hero] .hero-slide.active .hero-img');
+    var background = firstHeroImage && firstHeroImage.style.backgroundImage;
+    var imageMatch = background && background.match(/^url\(["']?(.*?)["']?\)$/);
+    if(imageMatch && imageMatch[1]){
+      var preloadImage = new Image();
+      preloadImage.onload = finishLoader;
+      preloadImage.onerror = finishLoader;
+      preloadImage.src = imageMatch[1];
+      if(preloadImage.complete) finishLoader();
+    } else {
+      finishLoader();
+    }
+    setTimeout(finishLoader, 4500);
+  }
+
   /* ---------- NAV: solid on scroll ---------- */
   var nav = document.querySelector('.nav');
   var heroEl = document.querySelector('[data-hero]');
@@ -88,15 +122,18 @@
   if(slides.length){
     var idx = slides.findIndex(function(s){ return s.classList.contains('active'); });
     if(idx < 0){ idx = 0; slides[0].classList.add('active'); }
-    // enable crossfade transitions only AFTER first paint so the first slide
-    // renders at full opacity even in a backgrounded tab (no frozen fade-in)
-    requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(hero) hero.classList.add('hero-ready'); }); });
-    setTimeout(function(){ if(hero) hero.classList.add('hero-ready'); }, 400);
-    setInterval(function(){
-      slides[idx].classList.remove('active');
-      idx = (idx+1) % slides.length;
-      slides[idx].classList.add('active');
-    }, 5200);
+    function startHero(){
+      // Enable crossfades after the opening image is ready and fully covered.
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(hero) hero.classList.add('hero-ready'); }); });
+      setTimeout(function(){ if(hero) hero.classList.add('hero-ready'); }, 400);
+      setInterval(function(){
+        slides[idx].classList.remove('active');
+        idx = (idx+1) % slides.length;
+        slides[idx].classList.add('active');
+      }, 5200);
+    }
+    if(window.fenixPageReady) window.fenixPageReady.then(startHero);
+    else startHero();
   }
 
   /* ---------- WHATSAPP FLOAT: scroll-interactive ---------- */

@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FENIX Jewelry — Born from Fire. Worn Forever.</title>
 <meta name="description" content="FENIX — a Marmaris fine-jewelry maison. Diamonds and gold, born from fire.">
-<link rel="stylesheet" href="assets/fenix.css?v=20260612-4">
+<link rel="preload" as="image" href="assets/img/hero1.png" fetchpriority="high">
+<link rel="preload" as="image" href="assets/img/logo.png?v=2">
+<link rel="stylesheet" href="assets/fenix.css?v=20260612-5">
 <style>
 /* ============ PAGE 1 — LANDING ============ */
 .hero{position:relative;height:100svh;min-height:680px;overflow:hidden;background:var(--obsidian);}
@@ -151,7 +153,16 @@
 }
 </style>
 </head>
-<body>
+<body class="is-loading">
+
+<div class="site-loader" data-site-loader role="status" aria-live="polite">
+  <div class="site-loader-inner">
+    <img class="site-loader-logo" src="assets/img/logo.png?v=2" alt="FENIX Jewelry">
+    <span class="site-loader-ring" aria-hidden="true"></span>
+    <span class="site-loader-text">Loading FENIX Jewelry</span>
+  </div>
+</div>
+<noscript><style>.site-loader{display:none}body.is-loading{overflow:auto}</style></noscript>
 
 <!-- ===== NAV ===== -->
 <nav class="nav">
@@ -333,7 +344,7 @@
   <span class="wa-label">Request via WhatsApp</span>
 </a>
 
-<script src="assets/fenix.js?v=20260612-3"></script>
+<script src="assets/fenix.js?v=20260612-4"></script>
 <script>
 /* Build the collections film-strip (duplicated for seamless loop) */
 (function(){
