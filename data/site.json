@@ -1,0 +1,49 @@
+{
+  "brand": "FENIX JEWELRY",
+  "location": "Marmaris",
+  "tagline": "Born from fire. Worn forever.",
+  "marquee": "FENIX JEWELRY — MARMARİS",
+  "footerMarquee": "From fire, everything begins.",
+  "contact": {
+    "phone": "+90 533 409 99 01",
+    "phoneHref": "tel:+905334099901",
+    "whatsapp": "905334099901",
+    "whatsappMessage": "https://wa.me/905334099901?text=Merhaba%20FENIX%2C%20bilgi%20almak%20istiyorum.",
+    "whatsappCall": "https://wa.me/905334099901",
+    "maps": "https://maps.app.goo.gl/Qcufd2CRMY3cD5rm6"
+  },
+  "contactMenu": [
+    {
+      "label": "Call",
+      "sub": "+90 533 409 99 01",
+      "href": "tel:+905334099901"
+    },
+    {
+      "label": "WhatsApp Message",
+      "sub": "Send a message",
+      "href": "https://wa.me/905334099901?text=Merhaba%20FENIX%2C%20bilgi%20almak%20istiyorum."
+    },
+    {
+      "label": "WhatsApp Call",
+      "sub": "Voice call",
+      "href": "https://wa.me/905334099901"
+    }
+  ],
+  "navOrder": [
+    "rings",
+    "necklaces",
+    "bracelets",
+    "earrings",
+    "bridal",
+    "gemstones",
+    "high-jewelry",
+    "gifts"
+  ],
+  "hero": [
+    "assets/img/hero1.png",
+    "assets/img/hero2.png",
+    "assets/img/hero3.png",
+    "assets/img/hero4.png"
+  ],
+  "copyright": "© 2026 FENIX JEWELRY"
+}
