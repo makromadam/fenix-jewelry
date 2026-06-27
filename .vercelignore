@@ -1,0 +1,23 @@
+# Files that should NOT be deployed to the live site.
+# The live storefront is only: index.html, category.html, product.html,
+# assets/ (css, js, data, img) and public/products/ (catalog images).
+
+# Offline single-file build — meant to be downloaded and opened locally,
+# never served from the web. 42 MB; deploying it only wastes bandwidth.
+/FENIX Jewelry (standalone).html
+/standalone-src.html
+
+# Build tooling & generated source data — not used by the live pages.
+/scripts
+/src
+
+# Portable JSON export for reuse in a CMS/app/backend — not used by the live pages.
+/data
+
+# Project docs / notes.
+/README.md
+/AGENTS.md
+/CLAUDE.md
+
+# Version control internals.
+/.git
