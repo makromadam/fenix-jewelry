@@ -344,6 +344,9 @@
   <span class="wa-label">Request via WhatsApp</span>
 </a>
 
+<script src="assets/fenix.data.js?v=20260612-5"></script>
+<script src="assets/fenix.overrides.js?v=20260612-5"></script>
+<script src="assets/fenix.store.js?v=20260612-5"></script>
 <script src="assets/fenix.js?v=20260612-4"></script>
 <script>
 /* Build the collections film-strip (duplicated for seamless loop) */
@@ -358,13 +361,20 @@
     {name:'High Jewelry', slug:'high-jewelry', img:'assets/img/slider-high-jewelry.png', pos:46},
     {name:'Gifts', slug:'gifts', img:'assets/img/slider-gifts.png', pos:46}
   ];
+  function escapeHtml(value){
+    return String(value==null?'':value).replace(/[&<>"']/g,function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+    });
+  }
   function card(c,i){
+    var meta=(window.FENIX&&FENIX.categories&&FENIX.categories[c.slug])||null;
+    var name=(meta&&meta.title)?meta.title:c.name;
     return '<a class="coll-card" href="category.html?cat='+c.slug+'">'+
       '<div class="ph coll-photo" style="background-image:url('+c.img+');background-position:center '+c.pos+'%">'+
         '<div class="coll-photo-scrim"></div>'+
         '<div class="corners"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>'+
       '</div>'+
-      '<div class="coll-meta"><div><div class="coll-name">'+c.name+'</div></div>'+
+      '<div class="coll-meta"><div><div class="coll-name">'+escapeHtml(name)+'</div></div>'+
       '<div class="coll-arrow">→</div></div>'+
     '</a>';
   }

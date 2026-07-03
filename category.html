@@ -85,6 +85,7 @@
   transition:background .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease);}
 .p-card .p-order:hover{background:var(--gold);color:var(--obsidian);border-color:var(--gold);}
 .p-card .p-mt{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding:6px 4px 0;}
+.p-card .p-price-line{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--gold-soft);padding:8px 4px 0;}
 
 @media (max-width:1024px){.product-grid{grid-template-columns:repeat(3,1fr);}}
 @media (max-width:760px){.product-grid{grid-template-columns:repeat(2,1fr);gap:16px;}}
@@ -244,6 +245,8 @@
 
 <script src="assets/fenix.data.js?v=20260612-3"></script>
 <script src="assets/fenix.products.js?v=20260612-3"></script>
+<script src="assets/fenix.overrides.js?v=20260612-3"></script>
+<script src="assets/fenix.store.js?v=20260612-3"></script>
 <script src="assets/fenix.js?v=20260612-3"></script>
 <script>
 (function(){
@@ -291,6 +294,7 @@
       var msg=encodeURIComponent("Hello FENIX, I'd like to request information about "+title+".");
       var link='product.html?cat='+encodeURIComponent(key)+'&id='+encodeURIComponent(p.slug);
       var cover=imageUrl(p.images&&p.images[0]);
+      var priceHtml=p.price?'<div class="p-price-line">'+escapeHtml(p.price)+'</div>':'';
       return '<article class="p-card">'+
         '<a class="p-shot" href="'+link+'">'+
           '<img class="p-img" src="'+escapeHtml(cover)+'" alt="'+escapeHtml(title)+'" loading="lazy" decoding="async">'+
@@ -299,6 +303,7 @@
           '<a class="p-name" href="'+link+'">'+escapeHtml(title)+'</a>'+
           '<a class="p-order" href="https://wa.me/905334099901?text='+msg+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">Order</a>'+
         '</div>'+
+        priceHtml+
       '</article>';
   }
 
