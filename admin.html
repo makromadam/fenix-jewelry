@@ -9,34 +9,44 @@
 <style>
 /* ============ ADMIN PANEL ============ */
 body{overflow-x:hidden;}
+[hidden]{display:none !important;} /* author display rules (flex/grid) must not override the hidden attribute */
 .wrap{max-width:1180px;margin:0 auto;padding:0 22px;}
 button{font-family:inherit;}
 
 /* header */
-.adm-head{position:sticky;top:0;z-index:40;background:rgba(11,10,9,.92);
-  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
-.adm-head-inner{display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:16px 0;}
-.adm-brand{display:flex;align-items:baseline;gap:12px;}
-.adm-brand .b{font-family:var(--display);font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:var(--ivory);}
-.adm-brand .s{font-family:var(--mono);font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);}
-.adm-status{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--muted);text-align:right;line-height:1.6;}
+.adm-head{position:sticky;top:0;z-index:40;background:rgba(11,10,9,.94);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+  box-shadow:0 14px 40px -28px rgba(0,0,0,.9);}
+.adm-head-inner{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 0;}
+.adm-logo{display:inline-flex;align-items:center;flex:none;}
+.adm-logo img{height:44px;width:auto;display:block;filter:drop-shadow(0 0 14px rgba(201,162,78,.12));
+  transition:opacity .25s var(--ease);}
+.adm-logo:hover img{opacity:.82;}
+.adm-tag{font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);
+  padding-left:16px;border-left:1px solid var(--line);align-self:center;}
+.adm-status{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--muted);text-align:right;line-height:1.7;}
 .adm-status b{color:var(--gold-soft);font-weight:400;}
 
 /* tabs */
-.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:14px 0 0;border-top:1px solid var(--line-soft);}
+.tabs{display:flex;gap:2px;padding:12px 0 0;border-top:1px solid var(--line-soft);
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.tabs::-webkit-scrollbar{display:none;}
 .tab{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
-  background:transparent;border:1px solid transparent;border-bottom:2px solid transparent;padding:12px 18px;cursor:pointer;transition:.25s var(--ease);}
+  background:transparent;border:0;border-bottom:2px solid transparent;padding:13px 18px;cursor:pointer;
+  transition:.25s var(--ease);white-space:nowrap;flex:0 0 auto;}
 .tab:hover{color:var(--ivory);}
 .tab.active{color:var(--gold);border-bottom-color:var(--gold);}
 
 /* generic buttons */
 .btn2{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ivory);
-  border:1px solid var(--line);background:transparent;padding:11px 18px;cursor:pointer;transition:.25s var(--ease);white-space:nowrap;}
+  border:1px solid var(--line);background:transparent;padding:0 18px;min-height:44px;cursor:pointer;
+  transition:.25s var(--ease);white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:8px;}
 .btn2:hover{border-color:var(--gold-deep);color:var(--gold-soft);}
+.btn2:active{transform:translateY(1px);}
 .btn2.solid{background:var(--gold);color:var(--obsidian);border-color:var(--gold);font-weight:700;}
 .btn2.solid:hover{background:var(--gold-soft);color:var(--obsidian);}
 .btn2.danger:hover{border-color:var(--ember);color:var(--ember);}
-.btn2.sm{padding:8px 13px;font-size:10px;letter-spacing:.1em;}
+.btn2.sm{padding:0 13px;min-height:34px;font-size:10px;letter-spacing:.1em;}
 .btn2:disabled{opacity:.4;cursor:not-allowed;}
 
 /* panels */
@@ -49,7 +59,7 @@ button{font-family:inherit;}
 .ptools .grow{flex:1 1 220px;}
 .field,select.field{width:100%;background:var(--charcoal);border:1px solid var(--line);color:var(--ivory);
   font-family:var(--body);font-size:14px;padding:12px 14px;outline:none;transition:border-color .25s var(--ease);}
-.field:focus{border-color:var(--gold);}
+.field:focus{border-color:var(--gold);box-shadow:0 0 0 1px rgba(201,162,78,.22);}
 select.field{cursor:pointer;}
 label.chk{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--muted);cursor:pointer;user-select:none;}
@@ -115,13 +125,15 @@ code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:
 .sheet-foot{display:flex;gap:12px;justify-content:flex-end;padding:20px 24px;border-top:1px solid var(--line-soft);position:sticky;bottom:0;background:var(--charcoal);flex-wrap:wrap;}
 .sheet-foot .left{margin-right:auto;}
 
-/* pin gate */
-.gate{position:fixed;inset:0;z-index:200;background:var(--obsidian);display:flex;align-items:center;justify-content:center;padding:24px;}
+/* login gate */
+.gate{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:radial-gradient(120% 90% at 50% 0%, rgba(201,162,78,.06), transparent 60%),var(--obsidian);}
 .gate[hidden]{display:none;}
 .gate-box{width:100%;max-width:360px;text-align:center;}
-.gate-box .b{font-family:var(--display);font-size:30px;letter-spacing:.14em;text-transform:uppercase;color:var(--ivory);}
-.gate-box .s{font-family:var(--mono);font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin:8px 0 30px;}
-.gate-box input{text-align:center;letter-spacing:.3em;margin-bottom:14px;}
+.gate-logo{width:clamp(160px,48vw,220px);height:auto;margin:0 auto 14px;display:block;
+  filter:drop-shadow(0 0 26px rgba(201,162,78,.16));}
+.gate-box .s{font-family:var(--mono);font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin:0 0 30px;}
+.gate-box input{text-align:center;letter-spacing:.24em;margin-bottom:14px;}
 .gate-err{color:var(--ember);font-family:var(--mono);font-size:11px;letter-spacing:.1em;min-height:18px;margin-bottom:10px;}
 
 /* toast */
@@ -131,11 +143,43 @@ code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .toast.error{border-color:var(--ember);}
 
+@media (max-width:900px){
+  .adm-status{font-size:10px;}
+  .cards{grid-template-columns:1fr;}
+}
 @media (max-width:640px){
-  .row{flex-wrap:wrap;}
+  .wrap{padding:0 16px;}
+  .panel{padding:24px 0 80px;}
+  .adm-head-inner{gap:12px;}
+  .adm-logo img{height:36px;}
+  .adm-tag{display:none;}
+  .adm-status{order:5;flex-basis:100%;margin-left:0;text-align:left;padding-top:2px;}
+  .ptools{gap:10px;}
+  .ptools .grow{flex:1 1 100%;}
+  #catFilter{flex:1 1 auto;min-width:0;}
+  #addBtn{flex:1 1 100%;order:6;}
+  .row{flex-wrap:wrap;gap:12px;padding:12px;}
+  .row .thumb{width:52px;height:52px;}
+  .row .rname{font-size:16px;white-space:normal;}
   .row .ract{width:100%;justify-content:flex-start;}
+  .row .ract .btn2{flex:1 1 auto;}
   .fgrid{grid-template-columns:1fr;}
-  .adm-status{margin-left:0;text-align:left;width:100%;}
+  .modal{padding:0;align-items:stretch;}
+  .sheet{max-width:none;min-height:100dvh;border-left:0;border-right:0;border-top:0;}
+  .sheet-head{padding:16px 18px;}
+  .sheet-body{padding:18px;}
+  .sheet-foot{padding:16px 18px;gap:10px;}
+  .sheet-foot .btn2{flex:1 1 auto;}
+  .sheet-foot .left{flex-basis:100%;order:3;}
+  .imgrow{flex-wrap:wrap;}
+  .imgrow .ipath{order:10;flex-basis:100%;}
+  .imgrow select{flex:1 1 auto;}
+}
+@media (max-width:430px){
+  .gate-box{max-width:100%;}
+  .row .rname{font-size:15px;}
+  .tab{padding:12px 13px;letter-spacing:.12em;}
+  .card{padding:18px;}
 }
 </style>
 </head>
@@ -144,12 +188,12 @@ code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:
 <!-- ===== PIN GATE ===== -->
 <div class="gate" id="gate">
   <div class="gate-box">
-    <div class="b">FENIX</div>
+    <img class="gate-logo" src="assets/img/logo.png?v=2" alt="FENIX Jewelry">
     <div class="s">Yönetim Girişi</div>
-    <input class="field" id="userInput" type="text" placeholder="KULLANICI ADI" autocomplete="off">
+    <input class="field" id="userInput" type="text" placeholder="KULLANICI ADI" autocomplete="off" autocapitalize="none" spellcheck="false">
     <input class="field" id="pinInput" type="password" placeholder="ŞİFRE" autocomplete="off">
     <div class="gate-err" id="pinErr"></div>
-    <button class="btn2 solid" id="pinBtn" style="width:100%;justify-content:center">Giriş</button>
+    <button class="btn2 solid" id="pinBtn" style="width:100%">Giriş</button>
   </div>
 </div>
 
@@ -158,11 +202,14 @@ code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:
   <header class="adm-head">
     <div class="wrap">
       <div class="adm-head-inner">
-        <div class="adm-brand"><span class="b">FENIX</span><span class="s">Yönetim</span></div>
+        <a class="adm-logo" href="index.html" target="_blank" rel="noopener" title="Siteyi aç">
+          <img src="assets/img/logo.png?v=2" alt="FENIX Jewelry">
+        </a>
+        <span class="adm-tag">Yönetim</span>
         <div class="adm-status" id="status">Yükleniyor…</div>
         <a class="btn2" id="viewSite" href="index.html" target="_blank" rel="noopener">Siteyi Aç ↗</a>
       </div>
-      <div class="tabs">
+      <div class="tabs" role="tablist">
         <button class="tab active" data-tab="products">Ürünler</button>
         <button class="tab" data-tab="collections">Koleksiyonlar</button>
         <button class="tab" data-tab="publish">Yayınla &amp; Yedek</button>
