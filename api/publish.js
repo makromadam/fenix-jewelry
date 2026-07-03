@@ -11,8 +11,8 @@
 module.exports = async function handler(req, res){
   res.setHeader('Cache-Control', 'no-store');
 
-  var url = process.env.KV_REST_API_URL;
-  var writeToken = process.env.KV_REST_API_TOKEN;
+  var url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  var writeToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
   var adminToken = process.env.ADMIN_TOKEN;
 
   if(req.method === 'GET'){

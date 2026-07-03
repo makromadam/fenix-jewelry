@@ -14,8 +14,8 @@ module.exports = async function handler(req, res){
   res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
   res.setHeader('Cache-Control', 'public, s-maxage=20, stale-while-revalidate=60');
 
-  var url = process.env.KV_REST_API_URL;
-  var token = process.env.KV_REST_API_READ_ONLY_TOKEN || process.env.KV_REST_API_TOKEN;
+  var url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
+  var token = process.env.KV_REST_API_READ_ONLY_TOKEN || process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
   if(!url || !token){
     res.status(200).send('/* FENIX: backend not configured */');
     return;

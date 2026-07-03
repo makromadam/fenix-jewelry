@@ -16,12 +16,21 @@ değer” deposu (Vercel KV) ve iki hazır sunucu fonksiyonu eklenir.
 
 ## Adımlar
 
-### 1) KV (depo) oluştur ve projeye bağla
-1. Vercel panelinde projeyi aç → üstten **Storage** sekmesi.
-2. **Create Database → KV** (Upstash) seç, bir isim ver (örn. `fenix-kv`), oluştur.
-3. Açılan ekranda **Connect Project** ile bu projeye bağla (Production + Preview).
-   - Bu işlem şu ortam değişkenlerini otomatik ekler:
-     `KV_REST_API_URL`, `KV_REST_API_TOKEN`, `KV_REST_API_READ_ONLY_TOKEN`.
+### 1) Depoyu (Upstash Redis) oluştur ve projeye bağla
+1. Vercel panelinde **Storage → Create a database**.
+2. **Upstash — Serverless DB (Redis, …)** satırını seç (soldaki yeşil ikon).
+   - Not: Alttaki “Redis — Official Redis for Vercel” TCP bağlantısı verir; bu
+     panelin ihtiyaç duyduğu **REST API** için **Upstash**'i seçin.
+3. Kurulum akışında bir **Redis** veritabanı oluştur:
+   - İsim: örn. `fenix-kv`
+   - Bölge (region): Türkiye'ye yakın olsun diye **eu-central-1 / Frankfurt** iyi seçim.
+4. Oluşturduktan sonra **Connect Project** ile **fenix-jewelry** projesine bağla
+   (Production ortamı; istersen Preview de).
+   - Bu işlem REST erişimi için ortam değişkenlerini otomatik ekler. Ada göre
+     ikisinden biri olabilir; panelin kodu **ikisini de** tanır:
+     `KV_REST_API_URL` / `KV_REST_API_TOKEN` **ya da**
+     `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`.
+   - Ekstra bir şey yapmana gerek yok; sadece bağlanmış olması yeterli.
 
 ### 2) Yayın anahtarını (şifreyi) ekle
 1. Proje → **Settings → Environment Variables**.
