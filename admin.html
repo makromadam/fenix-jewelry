@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>FENIX Jewelry — Yönetim Paneli</title>
+<link rel="stylesheet" href="assets/fenix.css?v=20260612-5">
+<style>
+/* ============ ADMIN PANEL ============ */
+body{overflow-x:hidden;}
+[hidden]{display:none !important;} /* author display rules (flex/grid) must not override the hidden attribute */
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px;}
+button{font-family:inherit;}
+
+/* header */
+.adm-head{position:sticky;top:0;z-index:40;background:rgba(11,10,9,.94);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+  box-shadow:0 14px 40px -28px rgba(0,0,0,.9);}
+.adm-head-inner{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:14px 0;}
+.adm-logo{display:inline-flex;align-items:center;flex:none;}
+.adm-logo img{height:44px;width:auto;display:block;filter:drop-shadow(0 0 14px rgba(201,162,78,.12));
+  transition:opacity .25s var(--ease);}
+.adm-logo:hover img{opacity:.82;}
+.adm-tag{font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);
+  padding-left:16px;border-left:1px solid var(--line);align-self:center;}
+.adm-status{margin-left:auto;font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--muted);text-align:right;line-height:1.7;}
+.adm-status b{color:var(--gold-soft);font-weight:400;}
+
+/* tabs */
+.tabs{display:flex;gap:2px;padding:12px 0 0;border-top:1px solid var(--line-soft);
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  background:transparent;border:0;border-bottom:2px solid transparent;padding:13px 18px;cursor:pointer;
+  transition:.25s var(--ease);white-space:nowrap;flex:0 0 auto;}
+.tab:hover{color:var(--ivory);}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+/* generic buttons */
+.btn2{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ivory);
+  border:1px solid var(--line);background:transparent;padding:0 18px;min-height:44px;cursor:pointer;
+  transition:.25s var(--ease);white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:8px;}
+.btn2:hover{border-color:var(--gold-deep);color:var(--gold-soft);}
+.btn2:active{transform:translateY(1px);}
+.btn2.solid{background:var(--gold);color:var(--obsidian);border-color:var(--gold);font-weight:700;}
+.btn2.solid:hover{background:var(--gold-soft);color:var(--obsidian);}
+.btn2.danger:hover{border-color:var(--ember);color:var(--ember);}
+.btn2.sm{padding:0 13px;min-height:34px;font-size:10px;letter-spacing:.1em;}
+.btn2:disabled{opacity:.4;cursor:not-allowed;}
+
+/* panels */
+.panel{padding:30px 0 90px;}
+.panel[hidden]{display:none;}
+.panel-note{color:var(--muted);font-size:14px;line-height:1.7;max-width:70ch;margin:0 0 24px;}
+
+/* toolbar */
+.ptools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:22px;}
+.ptools .grow{flex:1 1 220px;}
+.field,select.field{width:100%;background:var(--charcoal);border:1px solid var(--line);color:var(--ivory);
+  font-family:var(--body);font-size:14px;padding:12px 14px;outline:none;transition:border-color .25s var(--ease);}
+.field:focus{border-color:var(--gold);box-shadow:0 0 0 1px rgba(201,162,78,.22);}
+select.field{cursor:pointer;}
+label.chk{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);cursor:pointer;user-select:none;}
+label.chk input{accent-color:var(--gold);width:16px;height:16px;}
+.count{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;}
+
+/* product rows */
+.rows{display:flex;flex-direction:column;gap:10px;}
+.row{display:flex;align-items:center;gap:16px;background:var(--charcoal);border:1px solid var(--line-soft);padding:12px 14px;transition:border-color .25s var(--ease);}
+.row:hover{border-color:var(--line);}
+.row.dim{opacity:.5;}
+.row .thumb{width:58px;height:58px;flex:none;object-fit:cover;background:var(--charcoal-2);border:1px solid var(--line-soft);}
+.row .rinfo{min-width:0;flex:1 1 auto;}
+.row .rname{font-family:var(--display);font-size:18px;color:var(--ivory);line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.row .rmeta{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:5px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.row .ract{display:flex;gap:8px;flex:none;flex-wrap:wrap;justify-content:flex-end;}
+.chip{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--line);color:var(--muted);}
+.chip.edit{color:var(--gold-soft);border-color:var(--gold-deep);}
+.chip.new{color:var(--obsidian);background:var(--gold);border-color:var(--gold);}
+.chip.hidden{color:var(--ember);border-color:var(--ember);}
+.empty{color:var(--muted);font-size:14px;padding:40px 0;text-align:center;font-family:var(--mono);letter-spacing:.1em;}
+
+/* collections */
+.collrow{background:var(--charcoal);border:1px solid var(--line-soft);padding:18px 18px;margin-bottom:12px;}
+.collrow h3{font-family:var(--display);font-size:20px;margin:0 0 4px;color:var(--ivory);}
+.collrow .key{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.fgrid .full{grid-column:1/-1;}
+.flab{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 7px;}
+textarea.field{resize:vertical;min-height:70px;line-height:1.6;}
+
+/* publish */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+.card{background:var(--charcoal);border:1px solid var(--line-soft);padding:22px;}
+.card h4{font-family:var(--display);font-size:19px;margin:0 0 8px;color:var(--ivory);}
+.card p{color:var(--muted);font-size:13px;line-height:1.6;margin:0 0 16px;}
+.card .cbtns{display:flex;gap:10px;flex-wrap:wrap;}
+.steps{counter-reset:s;margin:18px 0 0;padding:0;list-style:none;}
+.steps li{counter-increment:s;position:relative;padding:0 0 14px 40px;color:var(--ivory);opacity:.9;font-size:14px;line-height:1.6;}
+.steps li::before{content:counter(s);position:absolute;left:0;top:-2px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--gold);color:var(--gold);font-family:var(--mono);font-size:12px;border-radius:50%;}
+code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:rgba(201,162,78,.08);padding:2px 7px;border:1px solid var(--line-soft);}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:80;background:rgba(6,5,4,.72);backdrop-filter:blur(4px);
+  display:flex;align-items:flex-start;justify-content:center;padding:40px 18px;overflow:auto;}
+.modal[hidden]{display:none;}
+.sheet{width:100%;max-width:720px;background:var(--charcoal);border:1px solid var(--line);margin:auto;}
+.sheet-head{display:flex;align-items:center;gap:14px;padding:20px 24px;border-bottom:1px solid var(--line-soft);position:sticky;top:0;background:var(--charcoal);z-index:2;}
+.sheet-head h2{font-family:var(--display);font-size:24px;margin:0;flex:1;color:var(--ivory);}
+.sheet-body{padding:24px;}
+.sheet-body .flab{margin-top:18px;}
+.sheet-body .flab:first-child{margin-top:0;}
+.x{background:transparent;border:1px solid var(--line);color:var(--ivory);width:38px;height:38px;cursor:pointer;font-size:18px;line-height:1;transition:.2s var(--ease);}
+.x:hover{border-color:var(--ember);color:var(--ember);}
+.imgs{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
+.imgrow{display:flex;align-items:center;gap:12px;background:var(--charcoal-2);border:1px solid var(--line-soft);padding:10px;}
+.imgrow img{width:52px;height:52px;object-fit:cover;flex:none;background:var(--obsidian);border:1px solid var(--line-soft);}
+.imgrow .ipath{flex:1;min-width:0;font-family:var(--mono);font-size:10px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.imgrow select{background:var(--charcoal);border:1px solid var(--line);color:var(--ivory);font-size:12px;padding:7px 8px;cursor:pointer;}
+.imgadd{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+.cover-badge{font-family:var(--mono);font-size:8px;letter-spacing:.1em;color:var(--gold);border:1px solid var(--gold-deep);padding:2px 6px;}
+.sheet-foot{display:flex;gap:12px;justify-content:flex-end;padding:20px 24px;border-top:1px solid var(--line-soft);position:sticky;bottom:0;background:var(--charcoal);flex-wrap:wrap;}
+.sheet-foot .left{margin-right:auto;}
+
+/* login gate */
+.gate{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;
+  background:radial-gradient(120% 90% at 50% 0%, rgba(201,162,78,.06), transparent 60%),var(--obsidian);}
+.gate[hidden]{display:none;}
+.gate-box{width:100%;max-width:360px;text-align:center;}
+.gate-logo{width:clamp(160px,48vw,220px);height:auto;margin:0 auto 14px;display:block;
+  filter:drop-shadow(0 0 26px rgba(201,162,78,.16));}
+.gate-box .s{font-family:var(--mono);font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin:0 0 30px;}
+.gate-box input{text-align:center;letter-spacing:.24em;margin-bottom:14px;}
+.gate-err{color:var(--ember);font-family:var(--mono);font-size:11px;letter-spacing:.1em;min-height:18px;margin-bottom:10px;}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:300;
+  background:var(--charcoal);border:1px solid var(--gold);color:var(--ivory);font-size:13px;line-height:1.5;
+  padding:14px 20px;max-width:min(560px,92vw);opacity:0;pointer-events:none;transition:.3s var(--ease);box-shadow:0 20px 50px rgba(0,0,0,.5);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.error{border-color:var(--ember);}
+
+@media (max-width:900px){
+  .adm-status{font-size:10px;}
+  .cards{grid-template-columns:1fr;}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px;}
+  .panel{padding:24px 0 80px;}
+  .adm-head-inner{gap:12px;}
+  .adm-logo img{height:36px;}
+  .adm-tag{display:none;}
+  .adm-status{order:5;flex-basis:100%;margin-left:0;text-align:left;padding-top:2px;}
+  .ptools{gap:10px;}
+  .ptools .grow{flex:1 1 100%;}
+  #catFilter{flex:1 1 auto;min-width:0;}
+  #addBtn{flex:1 1 100%;order:6;}
+  .row{flex-wrap:wrap;gap:12px;padding:12px;}
+  .row .thumb{width:52px;height:52px;}
+  .row .rname{font-size:16px;white-space:normal;}
+  .row .ract{width:100%;justify-content:flex-start;}
+  .row .ract .btn2{flex:1 1 auto;}
+  .fgrid{grid-template-columns:1fr;}
+  .modal{padding:0;align-items:stretch;}
+  .sheet{max-width:none;min-height:100dvh;border-left:0;border-right:0;border-top:0;}
+  .sheet-head{padding:16px 18px;}
+  .sheet-body{padding:18px;}
+  .sheet-foot{padding:16px 18px;gap:10px;}
+  .sheet-foot .btn2{flex:1 1 auto;}
+  .sheet-foot .left{flex-basis:100%;order:3;}
+  .imgrow{flex-wrap:wrap;}
+  .imgrow .ipath{order:10;flex-basis:100%;}
+  .imgrow select{flex:1 1 auto;}
+}
+@media (max-width:430px){
+  .gate-box{max-width:100%;}
+  .row .rname{font-size:15px;}
+  .tab{padding:12px 13px;letter-spacing:.12em;}
+  .card{padding:18px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== PIN GATE ===== -->
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <img class="gate-logo" src="assets/img/logo.png?v=2" alt="FENIX Jewelry">
+    <div class="s">Yönetim Girişi</div>
+    <input class="field" id="userInput" type="text" placeholder="KULLANICI ADI" autocomplete="off" autocapitalize="none" spellcheck="false">
+    <input class="field" id="pinInput" type="password" placeholder="ŞİFRE" autocomplete="off">
+    <div class="gate-err" id="pinErr"></div>
+    <button class="btn2 solid" id="pinBtn" style="width:100%">Giriş</button>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app" hidden>
+  <header class="adm-head">
+    <div class="wrap">
+      <div class="adm-head-inner">
+        <a class="adm-logo" href="index.html" target="_blank" rel="noopener" title="Siteyi aç">
+          <img src="assets/img/logo.png?v=2" alt="FENIX Jewelry">
+        </a>
+        <span class="adm-tag">Yönetim</span>
+        <div class="adm-status" id="status">Yükleniyor…</div>
+        <a class="btn2" id="viewSite" href="index.html" target="_blank" rel="noopener">Siteyi Aç ↗</a>
+      </div>
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="products">Ürünler</button>
+        <button class="tab" data-tab="collections">Koleksiyonlar</button>
+        <button class="tab" data-tab="publish">Yayınla &amp; Yedek</button>
+        <button class="tab" data-tab="help">Yardım</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- PRODUCTS -->
+    <section class="panel" id="panel-products">
+      <div class="ptools">
+        <div class="grow"><input class="field" id="search" type="search" placeholder="Ürün ara…" autocomplete="off"></div>
+        <select class="field" id="catFilter" style="width:auto;min-width:170px"></select>
+        <label class="chk"><input type="checkbox" id="showHidden" checked> Gizlileri göster</label>
+        <button class="btn2 solid" id="addBtn">+ Yeni Ürün</button>
+      </div>
+      <div class="count" id="pcount"></div>
+      <div class="rows" id="rows"></div>
+    </section>
+
+    <!-- COLLECTIONS -->
+    <section class="panel" id="panel-collections" hidden>
+      <p class="panel-note">Koleksiyon başlıklarını, alt başlıklarını ve tanıtım metinlerini buradan düzenleyin.
+        Değişiklikler koleksiyon sayfalarının üst bölümünde ve ana sayfadaki koleksiyon adlarında görünür.
+        Yeni koleksiyon eklemek/silmek menüyü etkilediğinden bu panelde kapalıdır.</p>
+      <div id="collections"></div>
+    </section>
+
+    <!-- PUBLISH -->
+    <section class="panel" id="panel-publish" hidden>
+      <p class="panel-note"><b style="color:var(--gold-soft)">Nasıl çalışır?</b> Yaptığınız her değişiklik <b style="color:var(--gold-soft)">bu tarayıcıya anında</b> kaydedilir —
+        “Siteyi Aç” ile hemen görebilirsiniz. Değişikliklerin <b style="color:var(--gold-soft)">tüm ziyaretçilere</b> yansıması için
+        “<b style="color:var(--gold-soft)">Canlıya Yayınla</b>” düğmesini kullanın — backend kuruluysa dosya indirmeye gerek yoktur.
+        Backend kurulu değilse dosyayı indirip sitenize yükleyebilirsiniz.</p>
+
+      <div class="cards">
+        <div class="card" id="backendCard" style="border-color:var(--gold-deep)">
+          <h4>Canlıya Yayınla (otomatik)</h4>
+          <p id="backendStatus">Backend durumu kontrol ediliyor…</p>
+          <label class="flab" for="backendToken">Yayın anahtarı</label>
+          <input class="field" id="backendToken" type="password" placeholder="•••••••••" autocomplete="off" style="margin-bottom:12px">
+          <div class="cbtns"><button class="btn2 solid" id="publishBackend">⚡ Canlıya Yayınla</button></div>
+        </div>
+        <div class="card">
+          <h4>Yayınla — dosya ile (yedek yöntem)</h4>
+          <p>Backend kullanmıyorsanız: bu dosyayı indirin ve sitenizdeki <code class="k">assets/fenix.overrides.js</code> dosyasının yerine koyup yeniden yayınlayın.</p>
+          <div class="cbtns"><button class="btn2" id="dlOverrides">fenix.overrides.js indir</button></div>
+        </div>
+        <div class="card">
+          <h4>Tam katalog (gelişmiş)</h4>
+          <p>Tüm ürün listesini tek dosyada dışa aktarır. Geliştiriciniz <code class="k">assets/fenix.products.js</code> dosyasını bununla değiştirebilir.</p>
+          <div class="cbtns"><button class="btn2" id="dlProducts">fenix.products.js indir</button></div>
+        </div>
+        <div class="card">
+          <h4>Yedekle / Geri Yükle</h4>
+          <p>Değişikliklerinizi yedek dosyası olarak indirin ya da daha önce aldığınız bir yedeği geri yükleyin.</p>
+          <div class="cbtns">
+            <button class="btn2" id="dlBackup">Yedeği indir</button>
+            <button class="btn2" id="importBtn">Yedek yükle</button>
+            <input type="file" id="importFile" accept="application/json,.json" hidden>
+          </div>
+        </div>
+        <div class="card">
+          <h4>Sıfırla</h4>
+          <p>Bu tarayıcıdaki tüm kaydedilmemiş değişiklikleri siler ve son yayınlanan hâle döner. Geri alınamaz.</p>
+          <div class="cbtns"><button class="btn2 danger" id="resetBtn">Değişiklikleri sıfırla</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HELP -->
+    <section class="panel" id="panel-help" hidden>
+      <p class="panel-note">Bu panel FENIX kataloğunu kod bilmeden yönetmeniz için hazırlandı.</p>
+      <div class="card" style="max-width:760px">
+        <h4>Kullanım</h4>
+        <ol class="steps">
+          <li><b>Ürünler</b> sekmesinde ürün adını, koleksiyonunu, fiyatını, açıklamasını ve görsellerini değiştirin; yeni ürün ekleyin ya da ürünü gizleyin.</li>
+          <li>Her değişiklik otomatik kaydedilir. <b>Siteyi Aç</b> ile (aynı tarayıcıda) sonucu hemen görebilirsiniz.</li>
+          <li>Değişiklikler herkeste görünsün istiyorsanız <b>Yayınla &amp; Yedek</b> sekmesinden <b>“Canlıya Yayınla”</b> düğmesini kullanın (backend kuruluysa, dosya yüklemeye gerek yoktur). Backend kurulu değilse aynı sekmeden <code class="k">fenix.overrides.js</code> dosyasını indirip sitenize yükleyin.</li>
+          <li>Görselleri bilgisayardan yükleyebilir ya da bir bağlantı (URL) yapıştırabilirsiniz. Yüklenen görseller otomatik küçültülür.</li>
+        </ol>
+        <p style="margin-top:20px;color:var(--muted);font-size:13px;line-height:1.7">
+          <b style="color:var(--gold-soft)">Giriş:</b> Kullanıcı adı ve şifreyi <code class="k">admin.html</code> dosyasının içindeki <code class="k">ADMIN_USER</code> ve <code class="k">ADMIN_PIN</code> satırlarından değiştirebilirsiniz.<br>
+          <b style="color:var(--gold-soft)">Not:</b> Fiyat ve açıklama alanları yalnızca doldurduğunuzda ürün sayfasında görünür. Ürün sayfalarındaki sıralama alfabetiktir.
+        </p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ===== EDIT MODAL ===== -->
+<div class="modal" id="modal" hidden>
+  <div class="sheet">
+    <div class="sheet-head">
+      <h2 id="mTitle">Ürün</h2>
+      <button class="x" id="mClose" aria-label="Kapat">✕</button>
+    </div>
+    <div class="sheet-body">
+      <label class="flab" for="fTitle">Ürün adı *</label>
+      <input class="field" id="fTitle" type="text" autocomplete="off">
+
+      <div class="fgrid" style="margin-top:18px">
+        <div>
+          <label class="flab" for="fCat">Koleksiyon</label>
+          <select class="field" id="fCat"></select>
+        </div>
+        <div>
+          <label class="flab" for="fPrice">Fiyat (isteğe bağlı)</label>
+          <input class="field" id="fPrice" type="text" placeholder="örn. $4,200" autocomplete="off">
+        </div>
+      </div>
+
+      <label class="flab" for="fDesc">Açıklama (isteğe bağlı)</label>
+      <textarea class="field" id="fDesc"></textarea>
+
+      <label class="flab">Görseller</label>
+      <div class="imgs" id="fImgs"></div>
+      <div class="imgadd">
+        <button class="btn2 sm" id="addUrl" type="button">+ Bağlantı (URL) ekle</button>
+        <button class="btn2 sm" id="addUpload" type="button">+ Bilgisayardan yükle</button>
+        <input type="file" id="uploadFile" accept="image/*" multiple hidden>
+      </div>
+    </div>
+    <div class="sheet-foot">
+      <button class="btn2 danger left" id="mReset" type="button" hidden>Orijinale döndür</button>
+      <button class="btn2" id="mCancel" type="button">İptal</button>
+      <button class="btn2 solid" id="mSave" type="button">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/fenix.data.js?v=20260612-5"></script>
+<script src="assets/fenix.products.js?v=20260612-5"></script>
+<script src="assets/fenix.overrides.js?v=20260612-5"></script>
+<script src="/api/overrides.js"></script>
+<script src="assets/fenix.store.js?v=20260612-5"></script>
+<script>
+(function(){
+  'use strict';
+
+  /* ====== CHANGE THIS: admin login (leave both '' to disable the gate) ====== */
+  var ADMIN_USER = 'ahmet';
+  var ADMIN_PIN  = 'fenix12345';
+  /* ========================================================================== */
+
+  var Store = window.FENIXStore;
+  if(!Store){ document.body.innerHTML = '<p style="padding:40px;font-family:monospace">Katalog yüklenemedi (fenix.store.js).</p>'; return; }
+
+  var COLOR_LABELS = {
+    'default':'—  (renksiz)',
+    'yellow-gold':'Sarı Altın',
+    'white-gold':'Beyaz Altın',
+    'rose-gold':'Roze Altın',
+    'gold':'Altın',
+    'silver':'Gümüş'
+  };
+  var COLOR_ORDER = ['default','yellow-gold','white-gold','rose-gold','gold','silver'];
+
+  var baseProducts   = Store.base.products || [];
+  var baseCategories = Store.base.categories || {};
+  var catKeys = Object.keys(baseCategories);
+  var baseById = {};
+  baseProducts.forEach(function(p){ baseById[p.id] = p; });
+
+  /* working document */
+  var doc = Store.normalizeDoc(Store.clone(Store.getLocal() || Store.getPublished() || Store.emptyDoc()));
+
+  var ui = { tab:'products', form:null };
+
+  /* ---------- helpers ---------- */
+  function $(id){ return document.getElementById(id); }
+  function esc(v){ return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function imageUrl(image){
+    var value = image ? (image.safePath || image.path || (typeof image==='string'?image:'')) : '';
+    if(!value) return 'assets/img/image-placeholder.png';
+    if(/^(data:|https?:|blob:)/.test(value)) return value;
+    if(value.indexOf('/products/')===0) return value.replace(/^\/products\//,'public/products/');
+    return value;
+  }
+  function catTitle(key){ var c = baseCategories[key]; return (c && c.title) || key; }
+
+  var toastTimer;
+  function toast(msg, isError){
+    var t = $('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (isError ? ' error' : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.className = 'toast'; }, isError ? 6500 : 3200);
+  }
+
+  var QUOTA_MSG = 'Kaydedilemedi: tarayıcı depolama alanı doldu. Görsellerin sayısını azaltın ya da görsel yerine bağlantı (URL) kullanın.';
+
+  /* Persist a new doc transactionally. Returns true on success. */
+  function saveDoc(next){
+    next = Store.normalizeDoc(next);
+    try{ Store.save(next); }
+    catch(e){ toast(QUOTA_MSG, true); return false; }
+    doc = next;
+    updateStatus();
+    return true;
+  }
+  function nextDoc(){ return Store.normalizeDoc(Store.clone(doc)); }
+
+  /* ---------- effective preview of a single product (for the list) ---------- */
+  function effBase(id){
+    var base = baseById[id];
+    var patch = doc.products.patch[id] || {};
+    return {
+      id:id, custom:false,
+      title: patch.title!=null ? patch.title : base.title,
+      category: patch.category!=null ? patch.category : base.category,
+      price: patch.price!=null ? patch.price : (base.price||''),
+      description: patch.description!=null ? patch.description : (base.description||''),
+      hidden: patch.hidden!=null ? !!patch.hidden : false,
+      edited: Object.keys(patch).filter(function(k){return k!=='hidden';}).length>0,
+      images: patch.images ? patch.images : base.images,
+      _base: base, _patch: patch
+    };
+  }
+
+  /* ---------- status ---------- */
+  function updateStatus(){
+    var editedCount = Object.keys(doc.products.patch).length;
+    var addCount = doc.products.add.length;
+    var hiddenCount = 0;
+    Object.keys(doc.products.patch).forEach(function(id){ if(doc.products.patch[id].hidden) hiddenCount++; });
+    doc.products.add.forEach(function(a){ if(a.hidden) hiddenCount++; });
+    var catEdits = Object.keys(doc.categories.patch).length;
+    var raw = '';
+    try{ raw = localStorage.getItem(Store.LS_KEY) || ''; }catch(e){}
+    var kb = Math.round((raw.length*2)/1024);
+    var live = Store.getLocal() ? 'yerel taslak' : 'yayınlanan';
+    $('status').innerHTML =
+      '<b>'+addCount+'</b> yeni · <b>'+editedCount+'</b> düzenli · <b>'+hiddenCount+'</b> gizli · <b>'+catEdits+'</b> koleksiyon' +
+      '<br>durum: '+live+' • ~'+kb+' KB';
+  }
+
+  /* ---------- tabs ---------- */
+  function setTab(name){
+    ui.tab = name;
+    ['products','collections','publish','help'].forEach(function(t){
+      $('panel-'+t).hidden = (t!==name);
+    });
+    document.querySelectorAll('.tab').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-tab')===name); });
+    if(name==='collections') renderCollections();
+  }
+
+  /* ---------- products list ---------- */
+  function buildCatFilter(){
+    var sel = $('catFilter');
+    var opts = '<option value="all">Tüm koleksiyonlar</option>';
+    catKeys.forEach(function(k){ opts += '<option value="'+esc(k)+'">'+esc(catTitle(k))+'</option>'; });
+    sel.innerHTML = opts;
+  }
+
+  function currentList(){
+    var q = ($('search').value||'').trim().toLowerCase();
+    var cat = $('catFilter').value || 'all';
+    var showHidden = $('showHidden').checked;
+    var list = [];
+    baseProducts.forEach(function(p){
+      var e = effBase(p.id);
+      if(cat!=='all' && e.category!==cat) return;
+      if(!showHidden && e.hidden) return;
+      if(q && e.title.toLowerCase().indexOf(q)===-1 && p.slug.toLowerCase().indexOf(q)===-1) return;
+      list.push(e);
+    });
+    doc.products.add.forEach(function(a, idx){
+      if(cat!=='all' && (a.category||'rings')!==cat) return;
+      if(!showHidden && a.hidden) return;
+      var title = a.title||'';
+      if(q && title.toLowerCase().indexOf(q)===-1) return;
+      list.push({
+        id: a.id||('new-'+idx), custom:true, addIndex:idx,
+        title:title, category:a.category||'rings', price:a.price||'',
+        hidden:!!a.hidden, edited:false, images:a.images
+      });
+    });
+    list.sort(function(a,b){
+      if(a.custom!==b.custom) return a.custom?-1:1; /* new first */
+      return String(a.title).localeCompare(String(b.title),'en',{numeric:true});
+    });
+    return list;
+  }
+
+  function renderRows(){
+    var list = currentList();
+    $('pcount').textContent = list.length + ' ürün gösteriliyor';
+    if(!list.length){ $('rows').innerHTML = '<div class="empty">Sonuç yok</div>'; return; }
+    var html = list.map(function(e){
+      var img = imageUrl((e.images&&e.images[0]) || null);
+      var chips = '';
+      if(e.custom) chips += '<span class="chip new">Yeni</span>';
+      else if(e.edited) chips += '<span class="chip edit">Düzenli</span>';
+      if(e.hidden) chips += '<span class="chip hidden">Gizli</span>';
+      var ref = e.custom ? ('data-idx="'+e.addIndex+'"') : ('data-id="'+esc(e.id)+'"');
+      var acts =
+        '<button class="btn2 sm" data-act="edit" '+ref+'>Düzenle</button>'+
+        '<button class="btn2 sm" data-act="toggle" '+ref+'>'+(e.hidden?'Göster':'Gizle')+'</button>'+
+        (e.custom ? '<button class="btn2 sm danger" data-act="del" '+ref+'>Sil</button>' : '');
+      return '<div class="row'+(e.hidden?' dim':'')+'">'+
+        '<img class="thumb" src="'+esc(img)+'" alt="" loading="lazy" onerror="this.src=\'assets/img/image-placeholder.png\'">'+
+        '<div class="rinfo">'+
+          '<div class="rname">'+esc(e.title||'(adsız)')+'</div>'+
+          '<div class="rmeta"><span>'+esc(catTitle(e.category))+'</span>'+(e.price?'<span>· '+esc(e.price)+'</span>':'')+chips+'</div>'+
+        '</div>'+
+        '<div class="ract">'+acts+'</div>'+
+      '</div>';
+    }).join('');
+    $('rows').innerHTML = html;
+  }
+
+  /* delegated row actions */
+  $('rows').addEventListener('click', function(ev){
+    var btn = ev.target.closest('button[data-act]');
+    if(!btn) return;
+    var act = btn.getAttribute('data-act');
+    var id = btn.getAttribute('data-id');
+    var idx = btn.getAttribute('data-idx');
+    if(act==='edit'){ openEdit(id, idx); return; }
+    if(act==='toggle'){ toggleHidden(id, idx); return; }
+    if(act==='del'){ deleteCustom(idx); return; }
+  });
+
+  function toggleHidden(id, idx){
+    var next = nextDoc();
+    if(id!=null){
+      var patch = next.products.patch[id] || {};
+      patch.hidden = !patch.hidden;
+      if(!patch.hidden) delete patch.hidden;
+      if(Object.keys(patch).length) next.products.patch[id] = patch; else delete next.products.patch[id];
+    } else if(idx!=null){
+      var a = next.products.add[+idx];
+      if(a){ a.hidden = !a.hidden; }
+    }
+    if(saveDoc(next)) renderRows();
+  }
+
+  function deleteCustom(idx){
+    if(idx==null) return;
+    if(!confirm('Bu ürünü kalıcı olarak silmek istiyor musunuz?')) return;
+    var next = nextDoc();
+    next.products.add.splice(+idx,1);
+    if(saveDoc(next)){ renderRows(); toast('Ürün silindi.'); }
+  }
+
+  /* ---------- edit modal ---------- */
+  function catOptions(sel){
+    return catKeys.map(function(k){
+      return '<option value="'+esc(k)+'"'+(k===sel?' selected':'')+'>'+esc(catTitle(k))+'</option>';
+    }).join('');
+  }
+
+  function openEdit(id, idx){
+    var model;
+    if(id!=null){
+      var e = effBase(id);
+      model = { mode:'base', id:id, title:e.title, category:e.category, price:e.price||'', description:e.description||'',
+                images:(e.images||[]).map(function(im){ return { path:im.path||im.safePath||'', color:im.color||'default' }; }) };
+    } else if(idx!=null){
+      var a = doc.products.add[+idx] || {};
+      model = { mode:'add', addIndex:+idx, title:a.title||'', category:a.category||'rings', price:a.price||'', description:a.description||'',
+                images:(a.images||[]).map(function(im){ return { path:im.path||im.safePath||'', color:im.color||'default' }; }) };
+    } else {
+      model = { mode:'new', title:'', category:($('catFilter').value!=='all'?$('catFilter').value:'rings'), price:'', description:'', images:[] };
+    }
+    ui.form = model;
+    $('mTitle').textContent = model.mode==='new' ? 'Yeni Ürün' : (model.mode==='add' ? 'Ürünü Düzenle (yeni)' : 'Ürünü Düzenle');
+    $('fTitle').value = model.title;
+    $('fCat').innerHTML = catOptions(model.category);
+    $('fPrice').value = model.price;
+    $('fDesc').value = model.description;
+    $('mReset').hidden = (model.mode!=='base') || !doc.products.patch[model.id];
+    renderFormImages();
+    $('modal').hidden = false;
+    document.body.style.overflow = 'hidden';
+    $('fTitle').focus();
+  }
+  function closeEdit(){
+    $('modal').hidden = true;
+    ui.form = null;
+    document.body.style.overflow = '';
+  }
+
+  function colorSelect(idx, current){
+    var opts = COLOR_ORDER.map(function(k){
+      return '<option value="'+k+'"'+(k===current?' selected':'')+'>'+esc(COLOR_LABELS[k])+'</option>';
+    }).join('');
+    return '<select data-img="'+idx+'" data-role="color">'+opts+'</select>';
+  }
+  function renderFormImages(){
+    var imgs = ui.form.images;
+    if(!imgs.length){ $('fImgs').innerHTML = '<div class="empty" style="padding:18px">Henüz görsel yok</div>'; return; }
+    $('fImgs').innerHTML = imgs.map(function(im, i){
+      var label = /^data:/.test(im.path) ? 'yüklenen görsel' : im.path;
+      return '<div class="imgrow">'+
+        '<img src="'+esc(imageUrl(im))+'" alt="" onerror="this.src=\'assets/img/image-placeholder.png\'">'+
+        (i===0?'<span class="cover-badge">KAPAK</span>':'')+
+        '<span class="ipath" title="'+esc(im.path)+'">'+esc(label)+'</span>'+
+        colorSelect(i, im.color||'default')+
+        (i!==0?'<button class="btn2 sm" data-role="cover" data-img="'+i+'" type="button">Kapak yap</button>':'')+
+        '<button class="btn2 sm danger" data-role="rmimg" data-img="'+i+'" type="button">Sil</button>'+
+      '</div>';
+    }).join('');
+  }
+
+  /* image row interactions (delegated) */
+  $('fImgs').addEventListener('click', function(ev){
+    var btn = ev.target.closest('button[data-role]');
+    if(!btn) return;
+    var i = +btn.getAttribute('data-img');
+    var role = btn.getAttribute('data-role');
+    if(role==='rmimg'){ ui.form.images.splice(i,1); renderFormImages(); }
+    else if(role==='cover'){ var m=ui.form.images.splice(i,1)[0]; ui.form.images.unshift(m); renderFormImages(); }
+  });
+  $('fImgs').addEventListener('change', function(ev){
+    var sel = ev.target.closest('select[data-role="color"]');
+    if(!sel) return;
+    var i = +sel.getAttribute('data-img');
+    if(ui.form.images[i]) ui.form.images[i].color = sel.value;
+  });
+
+  $('addUrl').addEventListener('click', function(){
+    var url = prompt('Görsel bağlantısı (URL) ya da yol:\nörn. https://... veya public/products/rings/foo.jpg');
+    if(url==null) return;
+    url = url.trim();
+    if(!url) return;
+    ui.form.images.push({ path:url, color:'default' });
+    renderFormImages();
+  });
+  $('addUpload').addEventListener('click', function(){ $('uploadFile').value=''; $('uploadFile').click(); });
+  $('uploadFile').addEventListener('change', function(ev){
+    var files = [].slice.call(ev.target.files||[]);
+    if(!files.length) return;
+    var remaining = files.length;
+    files.forEach(function(file){
+      downscale(file, function(dataUrl){
+        if(dataUrl) ui.form.images.push({ path:dataUrl, color:'default' });
+        if(--remaining===0){ renderFormImages(); toast('Görsel eklendi. Kaydetmeyi unutmayın.'); }
+      });
+    });
+  });
+
+  function downscale(file, cb){
+    var reader = new FileReader();
+    reader.onload = function(){
+      var img = new Image();
+      img.onload = function(){
+        var max = 1280, w = img.width, h = img.height;
+        if(w>max || h>max){ if(w>=h){ h=Math.round(h*max/w); w=max; } else { w=Math.round(w*max/h); h=max; } }
+        try{
+          var cv = document.createElement('canvas'); cv.width=w; cv.height=h;
+          var ctx = cv.getContext('2d');
+          ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,w,h);
+          ctx.drawImage(img,0,0,w,h);
+          cb(cv.toDataURL('image/jpeg',0.82));
+        }catch(e){ cb(reader.result); }
+      };
+      img.onerror = function(){ cb(null); };
+      img.src = reader.result;
+    };
+    reader.onerror = function(){ cb(null); };
+    reader.readAsDataURL(file);
+  }
+
+  /* save the edit form */
+  function saveForm(){
+    var m = ui.form;
+    if(!m) return;
+    var title = $('fTitle').value.trim();
+    if(!title){ toast('Ürün adı gerekli.', true); $('fTitle').focus(); return; }
+    var category = $('fCat').value;
+    var price = $('fPrice').value.trim();
+    var description = $('fDesc').value.trim();
+    var images = m.images.map(function(im){ return { path:im.path, color:im.color||'default' }; }).filter(function(im){ return im.path; });
+
+    var next = nextDoc();
+
+    if(m.mode==='base'){
+      var base = baseById[m.id];
+      var patch = Store.clone(next.products.patch[m.id] || {});
+      /* preserve hidden flag */
+      var wasHidden = patch.hidden;
+      patch = {};
+      if(wasHidden) patch.hidden = true;
+      if(title !== base.title) patch.title = title;
+      if(category !== base.category) patch.category = category;
+      if(price !== (base.price||'')) patch.price = price;
+      if(description !== (base.description||'')) patch.description = description;
+      var baseImgs = (base.images||[]).map(function(im){ return {path:im.path||im.safePath||'', color:im.color||'default'}; });
+      if(JSON.stringify(images) !== JSON.stringify(baseImgs)) patch.images = images;
+      if(Object.keys(patch).length) next.products.patch[m.id] = patch;
+      else delete next.products.patch[m.id];
+    } else {
+      /* add or existing-add */
+      var slug = uniqueSlug(Store.slugify(title), m.mode==='add' ? m.addIndex : -1, category);
+      var entry = {
+        id: category + '/' + slug, slug: slug, category: category, title: title,
+        images: images
+      };
+      if(price) entry.price = price;
+      if(description) entry.description = description;
+      if(m.mode==='add'){
+        if(next.products.add[m.addIndex] && next.products.add[m.addIndex].hidden) entry.hidden = true;
+        next.products.add[m.addIndex] = entry;
+      } else {
+        next.products.add.push(entry);
+      }
+    }
+
+    if(saveDoc(next)){ closeEdit(); renderRows(); toast('Kaydedildi.'); }
+  }
+
+  function uniqueSlug(base, skipIndex, category){
+    var taken = {};
+    baseProducts.forEach(function(p){ if(p.category===category) taken[p.slug]=true; });
+    doc.products.add.forEach(function(a, i){ if(i!==skipIndex && (a.category||'rings')===category && a.slug) taken[a.slug]=true; });
+    var slug = base, n = 2;
+    while(taken[slug]){ slug = base + '-' + n; n++; }
+    return slug;
+  }
+
+  function resetToBase(){
+    var m = ui.form;
+    if(!m || m.mode!=='base') return;
+    if(!confirm('Bu ürünü orijinal hâline döndürmek istiyor musunuz? Yaptığınız düzenlemeler silinir.')) return;
+    var next = nextDoc();
+    delete next.products.patch[m.id];
+    if(saveDoc(next)){ closeEdit(); renderRows(); toast('Ürün orijinale döndürüldü.'); }
+  }
+
+  /* ---------- collections ---------- */
+  function renderCollections(){
+    var html = catKeys.map(function(k){
+      var base = baseCategories[k] || {};
+      var patch = doc.categories.patch[k] || {};
+      function val(f){ return patch[f]!=null ? patch[f] : (base[f]!=null ? base[f] : ''); }
+      return '<div class="collrow">'+
+        '<h3>'+esc(base.title||k)+'</h3>'+
+        '<div class="key">'+esc(k)+'</div>'+
+        '<div class="fgrid">'+
+          '<div><label class="flab">Başlık</label><input class="field" data-cat="'+esc(k)+'" data-f="title" value="'+esc(val('title'))+'"></div>'+
+          '<div><label class="flab">Alt başlık</label><input class="field" data-cat="'+esc(k)+'" data-f="sub" value="'+esc(val('sub'))+'"></div>'+
+          '<div class="full"><label class="flab">Tanıtım metni</label><textarea class="field" data-cat="'+esc(k)+'" data-f="intro">'+esc(val('intro'))+'</textarea></div>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+    $('collections').innerHTML = html;
+  }
+  $('collections').addEventListener('change', function(ev){
+    var el = ev.target.closest('[data-cat]');
+    if(!el) return;
+    var key = el.getAttribute('data-cat');
+    var field = el.getAttribute('data-f');
+    var value = el.value;
+    var base = baseCategories[key] || {};
+    var next = nextDoc();
+    var patch = next.categories.patch[key] || {};
+    if(String(value) !== String(base[field]==null?'':base[field])) patch[field] = value;
+    else delete patch[field];
+    if(Object.keys(patch).length) next.categories.patch[key] = patch;
+    else delete next.categories.patch[key];
+    if(saveDoc(next)) toast('Koleksiyon güncellendi.');
+  });
+
+  /* ---------- publish / backup ---------- */
+  function download(filename, text, mime){
+    var blob = new Blob([text], { type: mime || 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(url); a.remove(); }, 120);
+  }
+  $('dlOverrides').addEventListener('click', function(){ download('fenix.overrides.js', Store.exportOverridesFile(), 'text/javascript'); toast('fenix.overrides.js indirildi. assets/ klasöründeki dosyayla değiştirin.'); });
+  $('dlProducts').addEventListener('click', function(){ download('fenix.products.js', Store.exportProductsFile(), 'text/javascript'); toast('fenix.products.js indirildi.'); });
+  $('dlBackup').addEventListener('click', function(){ download('fenix-yedek.json', JSON.stringify(Store.exportDoc(), null, 2), 'application/json'); toast('Yedek indirildi.'); });
+
+  $('importBtn').addEventListener('click', function(){ $('importFile').value=''; $('importFile').click(); });
+  $('importFile').addEventListener('change', function(ev){
+    var file = ev.target.files && ev.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try{
+        var parsed = JSON.parse(reader.result);
+        var next = Store.normalizeDoc(parsed);
+        if(!confirm('Yedeği geri yüklemek mevcut değişikliklerin yerine geçer. Devam edilsin mi?')) return;
+        if(saveDoc(next)){ renderRows(); renderCollections(); toast('Yedek geri yüklendi.'); }
+      }catch(e){ toast('Geçersiz yedek dosyası.', true); }
+    };
+    reader.readAsText(file);
+  });
+
+  $('resetBtn').addEventListener('click', function(){
+    if(!confirm('Bu tarayıcıdaki tüm değişiklikler silinsin mi? Bu işlem geri alınamaz.')) return;
+    Store.clearLocal();
+    doc = Store.normalizeDoc(Store.clone(Store.getPublished() || Store.emptyDoc()));
+    renderRows(); renderCollections(); updateStatus();
+    toast('Değişiklikler sıfırlandı.');
+  });
+
+  /* ---------- backend (canlıya yayınla) ---------- */
+  var TOKEN_KEY = 'fenix:backend-token';
+  function backendToken(){ try{ return localStorage.getItem(TOKEN_KEY) || ''; }catch(e){ return ''; } }
+  function checkBackend(){
+    var el = $('backendStatus');
+    fetch('/api/publish', { method:'GET', cache:'no-store' })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){
+        if(d && d.configured){
+          el.innerHTML = '<span style="color:var(--gold-soft)">Backend bağlı ✓</span> — “Canlıya Yayınla” ile değişiklikleriniz tüm ziyaretçilere birkaç saniye içinde yansır.';
+        } else {
+          el.innerHTML = 'Backend kurulu değil. Kurulum için depodaki <code class="k">BACKEND.md</code> dosyasına bakın; o zamana kadar aşağıdaki dosya yöntemini kullanın.';
+        }
+      })
+      .catch(function(){ el.innerHTML = 'Backend bu ortamda kullanılamıyor (yerelde açtıysanız normaldir). Kurulum: <code class="k">BACKEND.md</code>.'; });
+  }
+  function publishToBackend(){
+    var token = ($('backendToken').value || '').trim();
+    if(!token){ toast('Yayın anahtarını girin.', true); $('backendToken').focus(); return; }
+    try{ localStorage.setItem(TOKEN_KEY, token); }catch(e){}
+    var btn = $('publishBackend'); var old = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Yayınlanıyor…';
+    fetch('/api/publish', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'x-admin-token': token },
+      body: JSON.stringify(Store.exportDoc())
+    })
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(d){ return { ok:r.ok, d:d }; }); })
+      .then(function(res){
+        if(res.ok && res.d && res.d.ok){ toast('Canlıya yayınlandı ✓ — birkaç saniye içinde herkeste görünür.'); }
+        else { toast('Yayınlanamadı: ' + ((res.d && res.d.error) || 'bilinmeyen hata'), true); }
+      })
+      .catch(function(){ toast('Yayınlanamadı: sunucuya ulaşılamadı. Backend kurulu mu?', true); })
+      .then(function(){ btn.disabled = false; btn.textContent = old; });
+  }
+  $('publishBackend').addEventListener('click', publishToBackend);
+  $('backendToken').addEventListener('change', function(){ try{ localStorage.setItem(TOKEN_KEY, ($('backendToken').value || '').trim()); }catch(e){} });
+
+  /* ---------- wire up ---------- */
+  document.querySelectorAll('.tab').forEach(function(b){ b.addEventListener('click', function(){ setTab(b.getAttribute('data-tab')); }); });
+  $('search').addEventListener('input', renderRows);
+  $('catFilter').addEventListener('change', renderRows);
+  $('showHidden').addEventListener('change', renderRows);
+  $('addBtn').addEventListener('click', function(){ openEdit(null, null); });
+  $('mClose').addEventListener('click', closeEdit);
+  $('mCancel').addEventListener('click', closeEdit);
+  $('mSave').addEventListener('click', saveForm);
+  $('mReset').addEventListener('click', resetToBase);
+  $('modal').addEventListener('click', function(ev){ if(ev.target===$('modal')) closeEdit(); });
+  document.addEventListener('keydown', function(ev){ if(ev.key==='Escape' && !$('modal').hidden) closeEdit(); });
+
+  function boot(){
+    buildCatFilter();
+    renderRows();
+    updateStatus();
+    setTab('products');
+    try{ $('backendToken').value = backendToken(); }catch(e){}
+    checkBackend();
+  }
+
+  /* ---------- pin gate ---------- */
+  function unlock(){ $('gate').hidden = true; $('app').hidden = false; boot(); }
+  function tryPin(){
+    var u = $('userInput').value.trim();
+    var v = $('pinInput').value;
+    var userOk = (ADMIN_USER === '') || (u.toLowerCase() === ADMIN_USER.toLowerCase());
+    if(userOk && v === ADMIN_PIN){ try{ sessionStorage.setItem('fenix-admin-ok','1'); }catch(e){} unlock(); }
+    else { $('pinErr').textContent = 'Hatalı kullanıcı adı veya şifre.'; $('pinInput').value=''; $('pinInput').focus(); }
+  }
+  var already = false;
+  try{ already = sessionStorage.getItem('fenix-admin-ok')==='1'; }catch(e){}
+  if((ADMIN_USER==='' && ADMIN_PIN==='') || already){ unlock(); }
+  else {
+    $('pinBtn').addEventListener('click', tryPin);
+    $('userInput').addEventListener('keydown', function(ev){ if(ev.key==='Enter'){ if($('pinInput').value){ tryPin(); } else { $('pinInput').focus(); } } });
+    $('pinInput').addEventListener('keydown', function(ev){ if(ev.key==='Enter') tryPin(); });
+    $('userInput').focus();
+  }
+})();
+</script>
+</body>
+</html>
