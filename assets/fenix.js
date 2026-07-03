@@ -19,9 +19,14 @@
       var remaining = Math.max(0, loaderMinimum - (Date.now() - loaderStarted));
       setTimeout(function(){
         loader.classList.add('is-done');
-        document.body.classList.remove('is-loading');
         if(pageReadyResolve) pageReadyResolve();
-        setTimeout(function(){ if(loader.parentNode) loader.parentNode.removeChild(loader); }, 700);
+        // Unlock scroll only AFTER the logo has fully faded, so the scrollbar
+        // reappearing never shifts the still-visible centered logo (belt-and-
+        // suspenders alongside html{scrollbar-gutter:stable}).
+        setTimeout(function(){
+          document.body.classList.remove('is-loading');
+          if(loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 700);
       }, remaining);
     }
     var firstHeroImage = document.querySelector('[data-hero] .hero-slide.active .hero-img');
