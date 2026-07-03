@@ -7,12 +7,32 @@
    The write key (ADMIN_TOKEN) is the real security boundary — the admin
    panel's PIN is only a client-side convenience.
    Zero dependencies (global fetch + Upstash/Vercel KV REST API).
+   Auto-detects the REST URL/token regardless of env-var prefix.
    ============================================================ */
+
+function resolveKV(readOnly){
+  var env = process.env, url = null, writeTok = null, roTok = null, k, v;
+  for(k in env){
+    v = env[k];
+    if(!v) continue;
+    if(!url && /REST(_API)?_URL$/.test(k) && /^https?:/i.test(v)) url = v;
+    if(/TOKEN$/.test(k) && /REST/.test(k)){
+      if(/READ_ONLY/.test(k)){ if(!roTok) roTok = v; }
+      else if(!writeTok){ writeTok = v; }
+    }
+  }
+  url = url || env.KV_REST_API_URL || env.UPSTASH_REDIS_REST_URL || null;
+  writeTok = writeTok || env.KV_REST_API_TOKEN || env.UPSTASH_REDIS_REST_TOKEN || null;
+  roTok = roTok || env.KV_REST_API_READ_ONLY_TOKEN || null;
+  return { url: url, token: readOnly ? (roTok || writeTok) : writeTok };
+}
+
 module.exports = async function handler(req, res){
   res.setHeader('Cache-Control', 'no-store');
 
-  var url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
-  var writeToken = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+  var kv = resolveKV(false);
+  var url = kv.url;
+  var writeToken = kv.token;
   var adminToken = process.env.ADMIN_TOKEN;
 
   if(req.method === 'GET'){
