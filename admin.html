@@ -146,6 +146,7 @@ code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:
   <div class="gate-box">
     <div class="b">FENIX</div>
     <div class="s">Yönetim Girişi</div>
+    <input class="field" id="userInput" type="text" placeholder="KULLANICI ADI" autocomplete="off">
     <input class="field" id="pinInput" type="password" placeholder="ŞİFRE" autocomplete="off">
     <div class="gate-err" id="pinErr"></div>
     <button class="btn2 solid" id="pinBtn" style="width:100%;justify-content:center">Giriş</button>
@@ -237,7 +238,7 @@ code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:
           <li>Görselleri bilgisayardan yükleyebilir ya da bir bağlantı (URL) yapıştırabilirsiniz. Yüklenen görseller otomatik küçültülür.</li>
         </ol>
         <p style="margin-top:20px;color:var(--muted);font-size:13px;line-height:1.7">
-          <b style="color:var(--gold-soft)">Şifre:</b> Giriş şifresini <code class="k">admin.html</code> dosyasının içindeki <code class="k">ADMIN_PIN</code> satırından değiştirebilirsiniz.<br>
+          <b style="color:var(--gold-soft)">Giriş:</b> Kullanıcı adı ve şifreyi <code class="k">admin.html</code> dosyasının içindeki <code class="k">ADMIN_USER</code> ve <code class="k">ADMIN_PIN</code> satırlarından değiştirebilirsiniz.<br>
           <b style="color:var(--gold-soft)">Not:</b> Fiyat ve açıklama alanları yalnızca doldurduğunuzda ürün sayfasında görünür. Ürün sayfalarındaki sıralama alfabetiktir.
         </p>
       </div>
@@ -296,9 +297,10 @@ code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:
 (function(){
   'use strict';
 
-  /* ====== CHANGE THIS: admin password (leave '' to disable the gate) ====== */
-  var ADMIN_PIN = 'Fenix-QYM7485';
-  /* ======================================================================== */
+  /* ====== CHANGE THIS: admin login (leave both '' to disable the gate) ====== */
+  var ADMIN_USER = 'ahmet';
+  var ADMIN_PIN  = 'fenix12345';
+  /* ========================================================================== */
 
   var Store = window.FENIXStore;
   if(!Store){ document.body.innerHTML = '<p style="padding:40px;font-family:monospace">Katalog yüklenemedi (fenix.store.js).</p>'; return; }
@@ -780,17 +782,20 @@ code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:
   /* ---------- pin gate ---------- */
   function unlock(){ $('gate').hidden = true; $('app').hidden = false; boot(); }
   function tryPin(){
+    var u = $('userInput').value.trim();
     var v = $('pinInput').value;
-    if(v === ADMIN_PIN){ try{ sessionStorage.setItem('fenix-admin-ok','1'); }catch(e){} unlock(); }
-    else { $('pinErr').textContent = 'Hatalı şifre.'; $('pinInput').value=''; $('pinInput').focus(); }
+    var userOk = (ADMIN_USER === '') || (u.toLowerCase() === ADMIN_USER.toLowerCase());
+    if(userOk && v === ADMIN_PIN){ try{ sessionStorage.setItem('fenix-admin-ok','1'); }catch(e){} unlock(); }
+    else { $('pinErr').textContent = 'Hatalı kullanıcı adı veya şifre.'; $('pinInput').value=''; $('pinInput').focus(); }
   }
   var already = false;
   try{ already = sessionStorage.getItem('fenix-admin-ok')==='1'; }catch(e){}
-  if(ADMIN_PIN==='' || already){ unlock(); }
+  if((ADMIN_USER==='' && ADMIN_PIN==='') || already){ unlock(); }
   else {
     $('pinBtn').addEventListener('click', tryPin);
+    $('userInput').addEventListener('keydown', function(ev){ if(ev.key==='Enter'){ if($('pinInput').value){ tryPin(); } else { $('pinInput').focus(); } } });
     $('pinInput').addEventListener('keydown', function(ev){ if(ev.key==='Enter') tryPin(); });
-    $('pinInput').focus();
+    $('userInput').focus();
   }
 })();
 </script>
