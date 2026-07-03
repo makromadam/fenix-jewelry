@@ -242,14 +242,22 @@ code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:
     <!-- PUBLISH -->
     <section class="panel" id="panel-publish" hidden>
       <p class="panel-note"><b style="color:var(--gold-soft)">Nasıl çalışır?</b> Yaptığınız her değişiklik <b style="color:var(--gold-soft)">bu tarayıcıya anında</b> kaydedilir —
-        “Siteyi Aç” ile hemen görebilirsiniz. Ama değişikliklerin <b style="color:var(--gold-soft)">tüm ziyaretçilere</b> görünmesi için
-        aşağıdaki “Yayınla” dosyasını indirip sitenize yüklemeniz gerekir.</p>
+        “Siteyi Aç” ile hemen görebilirsiniz. Değişikliklerin <b style="color:var(--gold-soft)">tüm ziyaretçilere</b> yansıması için
+        “<b style="color:var(--gold-soft)">Canlıya Yayınla</b>” düğmesini kullanın — backend kuruluysa dosya indirmeye gerek yoktur.
+        Backend kurulu değilse dosyayı indirip sitenize yükleyebilirsiniz.</p>
 
       <div class="cards">
+        <div class="card" id="backendCard" style="border-color:var(--gold-deep)">
+          <h4>Canlıya Yayınla (otomatik)</h4>
+          <p id="backendStatus">Backend durumu kontrol ediliyor…</p>
+          <label class="flab" for="backendToken">Yayın anahtarı</label>
+          <input class="field" id="backendToken" type="password" placeholder="•••••••••" autocomplete="off" style="margin-bottom:12px">
+          <div class="cbtns"><button class="btn2 solid" id="publishBackend">⚡ Canlıya Yayınla</button></div>
+        </div>
         <div class="card">
-          <h4>Yayınla (herkese)</h4>
-          <p>Aşağıdaki dosyayı indirin ve sitenizdeki <code class="k">assets/fenix.overrides.js</code> dosyasının yerine koyup yeniden yayınlayın. Tüm değişiklikleriniz canlıya alınır.</p>
-          <div class="cbtns"><button class="btn2 solid" id="dlOverrides">fenix.overrides.js indir</button></div>
+          <h4>Yayınla — dosya ile (yedek yöntem)</h4>
+          <p>Backend kullanmıyorsanız: bu dosyayı indirin ve sitenizdeki <code class="k">assets/fenix.overrides.js</code> dosyasının yerine koyup yeniden yayınlayın.</p>
+          <div class="cbtns"><button class="btn2" id="dlOverrides">fenix.overrides.js indir</button></div>
         </div>
         <div class="card">
           <h4>Tam katalog (gelişmiş)</h4>
@@ -281,7 +289,7 @@ code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:
         <ol class="steps">
           <li><b>Ürünler</b> sekmesinde ürün adını, koleksiyonunu, fiyatını, açıklamasını ve görsellerini değiştirin; yeni ürün ekleyin ya da ürünü gizleyin.</li>
           <li>Her değişiklik otomatik kaydedilir. <b>Siteyi Aç</b> ile (aynı tarayıcıda) sonucu hemen görebilirsiniz.</li>
-          <li>Değişiklikler herkeste görünsün istiyorsanız <b>Yayınla &amp; Yedek</b> sekmesinden <code class="k">fenix.overrides.js</code> dosyasını indirin ve sitenize yükleyin.</li>
+          <li>Değişiklikler herkeste görünsün istiyorsanız <b>Yayınla &amp; Yedek</b> sekmesinden <b>“Canlıya Yayınla”</b> düğmesini kullanın (backend kuruluysa, dosya yüklemeye gerek yoktur). Backend kurulu değilse aynı sekmeden <code class="k">fenix.overrides.js</code> dosyasını indirip sitenize yükleyin.</li>
           <li>Görselleri bilgisayardan yükleyebilir ya da bir bağlantı (URL) yapıştırabilirsiniz. Yüklenen görseller otomatik küçültülür.</li>
         </ol>
         <p style="margin-top:20px;color:var(--muted);font-size:13px;line-height:1.7">
@@ -339,6 +347,7 @@ code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:
 <script src="assets/fenix.data.js?v=20260612-5"></script>
 <script src="assets/fenix.products.js?v=20260612-5"></script>
 <script src="assets/fenix.overrides.js?v=20260612-5"></script>
+<script src="/api/overrides.js"></script>
 <script src="assets/fenix.store.js?v=20260612-5"></script>
 <script>
 (function(){
@@ -806,6 +815,44 @@ code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:
     toast('Değişiklikler sıfırlandı.');
   });
 
+  /* ---------- backend (canlıya yayınla) ---------- */
+  var TOKEN_KEY = 'fenix:backend-token';
+  function backendToken(){ try{ return localStorage.getItem(TOKEN_KEY) || ''; }catch(e){ return ''; } }
+  function checkBackend(){
+    var el = $('backendStatus');
+    fetch('/api/publish', { method:'GET', cache:'no-store' })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(d){
+        if(d && d.configured){
+          el.innerHTML = '<span style="color:var(--gold-soft)">Backend bağlı ✓</span> — “Canlıya Yayınla” ile değişiklikleriniz tüm ziyaretçilere birkaç saniye içinde yansır.';
+        } else {
+          el.innerHTML = 'Backend kurulu değil. Kurulum için depodaki <code class="k">BACKEND.md</code> dosyasına bakın; o zamana kadar aşağıdaki dosya yöntemini kullanın.';
+        }
+      })
+      .catch(function(){ el.innerHTML = 'Backend bu ortamda kullanılamıyor (yerelde açtıysanız normaldir). Kurulum: <code class="k">BACKEND.md</code>.'; });
+  }
+  function publishToBackend(){
+    var token = ($('backendToken').value || '').trim();
+    if(!token){ toast('Yayın anahtarını girin.', true); $('backendToken').focus(); return; }
+    try{ localStorage.setItem(TOKEN_KEY, token); }catch(e){}
+    var btn = $('publishBackend'); var old = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Yayınlanıyor…';
+    fetch('/api/publish', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'x-admin-token': token },
+      body: JSON.stringify(Store.exportDoc())
+    })
+      .then(function(r){ return r.json().catch(function(){ return {}; }).then(function(d){ return { ok:r.ok, d:d }; }); })
+      .then(function(res){
+        if(res.ok && res.d && res.d.ok){ toast('Canlıya yayınlandı ✓ — birkaç saniye içinde herkeste görünür.'); }
+        else { toast('Yayınlanamadı: ' + ((res.d && res.d.error) || 'bilinmeyen hata'), true); }
+      })
+      .catch(function(){ toast('Yayınlanamadı: sunucuya ulaşılamadı. Backend kurulu mu?', true); })
+      .then(function(){ btn.disabled = false; btn.textContent = old; });
+  }
+  $('publishBackend').addEventListener('click', publishToBackend);
+  $('backendToken').addEventListener('change', function(){ try{ localStorage.setItem(TOKEN_KEY, ($('backendToken').value || '').trim()); }catch(e){} });
+
   /* ---------- wire up ---------- */
   document.querySelectorAll('.tab').forEach(function(b){ b.addEventListener('click', function(){ setTab(b.getAttribute('data-tab')); }); });
   $('search').addEventListener('input', renderRows);
@@ -824,6 +871,8 @@ code.k{font-family:var(--mono);font-size:12px;color:var(--gold-soft);background:
     renderRows();
     updateStatus();
     setTab('products');
+    try{ $('backendToken').value = backendToken(); }catch(e){}
+    checkBackend();
   }
 
   /* ---------- pin gate ---------- */
